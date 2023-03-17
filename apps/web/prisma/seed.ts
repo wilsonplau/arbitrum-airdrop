@@ -9,7 +9,7 @@ async function main() {
   const ENDING_BLOCK = 70552861;
   const recipients = await getAirdropRecipients(STARTING_BLOCK, ENDING_BLOCK);
   const data = Object.entries(recipients).map(([address, amount]) => ({
-    address,
+    address: address.toLowerCase(),
     amountString: amount,
     amountNumber: Number(
       BigInt(amount) / BigInt(10 ** ARBITRUM_TOKEN_DECIMALS)
