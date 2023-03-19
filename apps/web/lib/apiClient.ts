@@ -1,5 +1,10 @@
 import axios from "axios";
-import { Claim, GetClaimsResponse, GetClaimStatsResponse } from "~/types";
+import {
+  Claim,
+  GetClaimDistributionResponse,
+  GetClaimsResponse,
+  GetClaimStatsResponse,
+} from "~/types";
 
 axios.defaults.baseURL = "/api";
 
@@ -16,6 +21,12 @@ export default class apiClient {
   }
   static async getClaimStats(): Promise<GetClaimStatsResponse> {
     const res = await axios.get<GetClaimStatsResponse>("/claims/stats");
+    return res.data;
+  }
+  static async getClaimsDistribution(): Promise<GetClaimDistributionResponse> {
+    const res = await axios.get<GetClaimDistributionResponse>(
+      "/claims/distribution"
+    );
     return res.data;
   }
 }

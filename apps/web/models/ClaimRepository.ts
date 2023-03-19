@@ -44,11 +44,11 @@ export default class ClaimRepository {
     };
   }
   static async getDistribution(): Promise<{
-    count: { [key: number]: number };
-    sum: { [key: number]: number };
+    count: { [key: string]: number };
+    sum: { [key: string]: number };
   }> {
-    const count: { [key: number]: number } = {};
-    const sum: { [key: number]: number } = {};
+    const count: { [key: string]: number } = {};
+    const sum: { [key: string]: number } = {};
     const results = await prisma.claim.groupBy({
       by: ["amountNumber"],
       _count: { amountNumber: true },

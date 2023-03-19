@@ -17,8 +17,8 @@ export interface GetClaimStatsResponse {
 }
 
 export interface GetClaimDistributionResponse {
-  count: { [key: number]: number };
-  sum: { [key: number]: number };
+  count: { [key: string]: number };
+  sum: { [key: string]: number };
 }
 
 export interface PaginatedResponse<T> {
