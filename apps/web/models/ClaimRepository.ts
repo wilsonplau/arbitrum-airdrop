@@ -1,38 +1,46 @@
 import prisma from "~/prisma";
-import { Claim } from "@prisma/client";
+import { Prisma, Claim } from "@prisma/client";
 
 export default class ClaimRepository {
   static async get(address: string): Promise<Claim | null> {
     return prisma.claim.findUnique({ where: { address } });
   }
-  static async getMany(
-    offset: number = 0,
-    limit: number = 10
-  ): Promise<Claim[]> {
+  static async getMany(cursor?: string, limit: number = 10): Promise<Claim[]> {
     return prisma.claim.findMany({
-      orderBy: { amountNumber: "desc" },
-      skip: offset,
+      orderBy: [{ amountNumber: "desc" }, { address: "asc" }],
+      cursor: cursor ? { address: cursor } : undefined,
       take: limit,
     });
   }
-  static async findManyByAddress(
-    partialAddr: string,
-    offset: number = 0,
+  static async findMany(
+    query: Partial<Claim>,
+    cursor?: string,
     limit: number = 10
   ) {
-    console.log(partialAddr);
+    // Only support findMany by partial address
+    const where: Prisma.ClaimWhereInput = {};
+    if (query.address) where["address"] = { contains: query.address };
     return prisma.claim.findMany({
-      where: { address: { contains: partialAddr } },
-      orderBy: { amountNumber: "desc" },
-      skip: offset,
+      where,
+      orderBy: [{ amountNumber: "desc" }, { address: "asc" }],
+      cursor: cursor ? { address: cursor } : undefined,
       take: limit,
     });
   }
-  static async getStats(): Promise<{ sum: number; avg: number }> {
+  static async getStats(): Promise<{
+    sum: number;
+    avg: number;
+    count: number;
+  }> {
     const agg = await prisma.claim.aggregate({
       _sum: { amountNumber: true },
       _avg: { amountNumber: true },
+      _count: true,
     });
-    return { sum: agg._sum.amountNumber || 0, avg: agg._avg.amountNumber || 0 };
+    return {
+      sum: agg._sum.amountNumber || 0,
+      avg: agg._avg.amountNumber || 0,
+      count: agg._count || 0,
+    };
   }
 }
