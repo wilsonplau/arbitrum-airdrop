@@ -10,6 +10,7 @@ export default class ClaimRepository {
       orderBy: [{ amountNumber: "desc" }, { address: "asc" }],
       cursor: cursor ? { address: cursor } : undefined,
       take: limit,
+      skip: cursor ? 1 : 0,
     });
   }
   static async findMany(
@@ -25,6 +26,7 @@ export default class ClaimRepository {
       orderBy: [{ amountNumber: "desc" }, { address: "asc" }],
       cursor: cursor ? { address: cursor } : undefined,
       take: limit,
+      skip: cursor ? 1 : 0,
     });
   }
   static async getStats(): Promise<{
