@@ -16,6 +16,11 @@ export interface GetClaimStatsResponse {
   count: number;
 }
 
+export interface GetClaimDistributionResponse {
+  count: { [key: string]: number };
+  sum: { [key: string]: number };
+}
+
 export interface PaginatedResponse<T> {
   data: T[];
   nextCursor: string;
