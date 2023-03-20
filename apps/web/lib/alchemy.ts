@@ -34,7 +34,7 @@ export async function getLogsParallel(
   return output;
 }
 
-export async function getLogsSerial(
+export async function getLogsDangerously(
   filter: Pick<Filter, "address" | "topics">,
   fromBlock: number,
   toBlock: number
