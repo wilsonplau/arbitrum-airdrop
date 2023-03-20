@@ -70,7 +70,7 @@ const UserClaimsTable: React.FC = () => {
               <span className="font-medium">{pageNumber * pageSize + 1}</span>{" "}
               to{" "}
               <span className="font-medium">
-                {pageNumber * pageSize + pageSize}
+                {pageNumber * pageSize + claims.length}
               </span>
             </p>
           </div>
