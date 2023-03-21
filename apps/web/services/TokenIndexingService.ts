@@ -4,7 +4,7 @@ import { utf8ToBytes, toHex } from "ethereum-cryptography/utils";
 import { ethers } from "ethers";
 
 import { ARBITRUM_TOKEN_ADDRESS } from "~/constants";
-import alchemy, { getLogsParallel } from "~/lib/alchemy";
+import alchemy, { getLogsDangerously } from "~/lib/alchemy";
 
 const CONTRACT_DEPLOY_BLOCK = 70397784;
 
@@ -20,7 +20,7 @@ export default class TokenIndexingService {
     fromBlock: number = CONTRACT_DEPLOY_BLOCK,
     toBlock?: number
   ): Promise<Log[]> {
-    const logs = await getLogsParallel(
+    const logs = await getLogsDangerously(
       {
         address: ARBITRUM_TOKEN_ADDRESS,
         topics: [`0x${TOKEN_TRANSFER_EVENT_HASH}`],
