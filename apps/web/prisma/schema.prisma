@@ -17,7 +17,7 @@ model Claim {
 }
 
 model Event {
-  id               String   @id // txHash + logIndex
+  id               String         @id // txHash + logIndex
   address          String
   topics           String[]
   eventHash        String // topics[0]
@@ -29,4 +29,12 @@ model Event {
   logIndex         Int
   removed          Boolean
   description      Json // parsed event description
+  tokenBalances    TokenBalance[]
+}
+
+model TokenBalance {
+  address String  @id
+  token   String
+  balance String // BigInt string
+  events  Event[]
 }
