@@ -6,6 +6,7 @@ const settings = {
 };
 
 const alchemy = new Alchemy(settings);
+const BLOCK_INCREMENT = 2000;
 
 export async function getLogsParallel(
   filter: Pick<Filter, "address" | "topics">,
@@ -13,7 +14,6 @@ export async function getLogsParallel(
   toBlock: number,
   batchSize: number = 25
 ): Promise<Log[]> {
-  const BLOCK_INCREMENT = 2000;
   const output: Log[] = [];
   let currentBlock = fromBlock;
   while (currentBlock < toBlock) {
@@ -34,6 +34,41 @@ export async function getLogsParallel(
   return output;
 }
 
+export async function getLogDangerously(
+  filter: Pick<Filter, "address" | "topics">,
+  fromBlock: number,
+  toBlock: number
+) {
+  try {
+    return await alchemy.core.getLogs({
+      ...filter,
+      fromBlock,
+      toBlock,
+    });
+  } catch (e: any) {
+    const message = JSON.parse(e.body).error.message;
+    if (message.contains("this block range should work: [")) {
+      const idxStart = message.indexOf("[");
+      const idxEnd = message.indexOf("]");
+      const [fromBlockRec, toBlockRec] = message
+        .slice(idxStart + 1, idxEnd)
+        .split(",")
+        .map((x: string) => parseInt(x.trim(), 16));
+      return await alchemy.core.getLogs({
+        ...filter,
+        fromBlock: fromBlockRec,
+        toBlock: toBlockRec,
+      });
+    } else {
+      return await alchemy.core.getLogs({
+        ...filter,
+        fromBlock,
+        toBlock: fromBlock + BLOCK_INCREMENT - 1,
+      });
+    }
+  }
+}
+
 export async function getLogsDangerously(
   filter: Pick<Filter, "address" | "topics">,
   fromBlock: number,
@@ -42,35 +77,11 @@ export async function getLogsDangerously(
   const output: Log[] = [];
   let currentBlock = fromBlock;
   while (currentBlock < toBlock) {
-    try {
-      const logs = await alchemy.core.getLogs({
-        ...filter,
-        fromBlock: currentBlock,
-        toBlock: toBlock,
-      });
-      output.push(...logs);
-    } catch (e: any) {
-      const message = JSON.parse(e.body).error.message;
-      if (message.contains("this block range should work: [")) {
-        const idxStart = message.indexOf("[");
-        const idxEnd = message.indexOf("]");
-        const [fromBlockRec, toBlockRec] = message
-          .slice(idxStart + 1, idxEnd)
-          .split(",")
-          .map((x: string) => parseInt(x.trim(), 16));
-        const logs = await alchemy.core.getLogs({
-          ...filter,
-          fromBlock: fromBlockRec,
-          toBlock: toBlockRec,
-        });
-        output.push(...logs);
-        currentBlock = toBlockRec + 1;
-      } else {
-        break;
-      }
-    }
-    return output;
+    const logs = await getLogDangerously(filter, currentBlock, toBlock);
+    output.push(...logs);
+    currentBlock = logs[logs.length - 1].blockNumber + 1;
   }
+  return output;
 }
 
 export default alchemy;
