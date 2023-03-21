@@ -79,6 +79,7 @@ export async function getLogsDangerously(
   while (currentBlock < toBlock) {
     const logs = await getLogDangerously(filter, currentBlock, toBlock);
     output.push(...logs);
+    if (logs.length === 0) break;
     currentBlock = logs[logs.length - 1].blockNumber + 1;
   }
   return output;
