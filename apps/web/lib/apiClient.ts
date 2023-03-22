@@ -4,6 +4,8 @@ import {
   GetClaimDistributionResponse,
   GetClaimsResponse,
   GetClaimStatsResponse,
+  GetTokenBalancesResponse,
+  GetTokenSupplyResponse,
 } from "~/types";
 
 axios.defaults.baseURL = "/api";
@@ -28,5 +30,19 @@ export default class apiClient {
       "/claims/distribution"
     );
     return res.data;
+  }
+  static async getTokenBalances(
+    query: string,
+    cursor?: string,
+    limit?: number
+  ): Promise<GetTokenBalancesResponse> {
+    const res = await axios.get<GetTokenBalancesResponse>("/token/balances", {
+      params: { address: query, cursor, limit },
+    });
+    return res.data;
+  }
+  static async getTokenSupply(): Promise<number> {
+    const res = await axios.get<GetTokenSupplyResponse>("/token/supply");
+    return res.data.supply;
   }
 }
