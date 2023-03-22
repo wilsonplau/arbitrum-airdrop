@@ -1,5 +1,10 @@
 import type { Claim } from "@prisma/client";
 
+export interface TokenBalanceClient {
+  address: string;
+  balance: number;
+}
+
 export interface GetClaimsRequest {
   address?: string | string[];
   cursor?: string | string[];
@@ -19,6 +24,19 @@ export interface GetClaimStatsResponse {
 export interface GetClaimDistributionResponse {
   count: { [key: string]: number };
   sum: { [key: string]: number };
+}
+
+export interface GetTokenBalancesRequest {}
+
+export interface GetTokenBalancesResponse {
+  balances: TokenBalanceClient[];
+  count: number;
+}
+
+export interface GetTokenSupplyRequest {}
+
+export interface GetTokenSupplyResponse {
+  supply: number;
 }
 
 export interface PaginatedResponse<T> {

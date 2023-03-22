@@ -2,8 +2,8 @@ import { Event } from "@prisma/client";
 import { keccak256 } from "ethereum-cryptography/keccak";
 import { toHex, utf8ToBytes } from "ethereum-cryptography/utils";
 import { ethers, ZeroAddress } from "ethers";
-import { ARBITRUM_TOKEN_ADDRESS } from "~/constants";
-import TokenBalanceRepository from "~/models/TokenBalanceRepository";
+
+import { ARBITRUM_TOKEN_ADDRESS, ARBITRUM_TOKEN_DECIMALS } from "~/constants";
 import prisma from "~/prisma";
 
 export const TOKEN_TRANSFER_EVENT_HASH = toHex(
@@ -18,7 +18,7 @@ export default class TokenProcessingService {
     const logs = await prisma.event.findMany({
       where: {
         eventHash: `0x${TOKEN_TRANSFER_EVENT_HASH}`,
-        tokenBalances: { none: {} },
+        isProcessed: false,
       },
       orderBy: [{ blockNumber: "asc" }, { logIndex: "asc" }],
     });
@@ -36,42 +36,53 @@ export default class TokenProcessingService {
     const updates = [];
 
     if (from != ZeroAddress) {
-      const fromUser = await TokenBalanceRepository.get(from);
+      const fromUser = await prisma.tokenBalance.findUnique({
+        where: { address: from },
+      });
       if (!fromUser) {
         console.log({ from, to, value });
         throw new Error("Invalid transaction.");
       }
-      const newBalance = BigInt(fromUser.balance) - BigInt(value);
+      const newBalance = BigInt(fromUser.balanceString) - BigInt(value);
+      const balanceNumber = newBalance / BigInt(10 ** ARBITRUM_TOKEN_DECIMALS);
       updates.push(
         prisma.tokenBalance.update({
           where: { address: from },
           data: {
-            balance: newBalance.toString(),
+            balanceString: newBalance.toString(),
+            balanceNumber,
             events: { connect: { id: log.id } },
           },
         })
       );
     }
-
     if (to != ZeroAddress) {
-      const toUser = await TokenBalanceRepository.get(to);
+      const toUser = await prisma.tokenBalance.findUnique({
+        where: { address: to },
+      });
       if (toUser) {
-        const newBalance = BigInt(toUser.balance) + BigInt(value);
+        const newBalance = BigInt(toUser.balanceString) + BigInt(value);
+        const balanceNumber =
+          newBalance / BigInt(10 ** ARBITRUM_TOKEN_DECIMALS);
         updates.push(
           prisma.tokenBalance.update({
             where: { address: to },
             data: {
-              balance: newBalance.toString(),
+              balanceString: newBalance.toString(),
+              balanceNumber,
               events: { connect: { id: log.id } },
             },
           })
         );
       } else {
+        const balanceNumber =
+          BigInt(value) / BigInt(10 ** ARBITRUM_TOKEN_DECIMALS);
         updates.push(
           prisma.tokenBalance.create({
             data: {
               address: to,
-              balance: value.toString(),
+              balanceString: value.toString(),
+              balanceNumber,
               token: ARBITRUM_TOKEN_ADDRESS,
               events: { connect: { id: log.id } },
             },
@@ -79,6 +90,12 @@ export default class TokenProcessingService {
         );
       }
     }
+    updates.push(
+      prisma.event.update({
+        where: { id: log.id },
+        data: { isProcessed: true },
+      })
+    );
     await prisma.$transaction(updates);
   }
 }
