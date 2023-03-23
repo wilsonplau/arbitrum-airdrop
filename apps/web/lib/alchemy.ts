@@ -47,7 +47,7 @@ export async function getLogDangerously(
     });
   } catch (e: any) {
     const message = JSON.parse(e.body).error.message;
-    if (message.contains("this block range should work: [")) {
+    if (message.includes("this block range should work: [")) {
       const idxStart = message.indexOf("[");
       const idxEnd = message.indexOf("]");
       const [fromBlockRec, toBlockRec] = message

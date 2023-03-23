@@ -11,9 +11,13 @@ datasource db {
 }
 
 model Claim {
-  address      String @id
-  amountString String
-  amountNumber Float
+  address             String  @id
+  amountString        String
+  amountNumber        BigInt
+  hasClaimed          Boolean @default(false)
+  claimedAmountString String  @default("0")
+  claimedAmountNumber BigInt  @default(0)
+  events              Event[]
 }
 
 model Event {
@@ -31,6 +35,7 @@ model Event {
   description      Json // parsed event description
   isProcessed      Boolean        @default(false)
   tokenBalances    TokenBalance[]
+  claims           Claim[]
 }
 
 model TokenBalance {

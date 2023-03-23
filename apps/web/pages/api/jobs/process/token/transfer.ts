@@ -1,9 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import EventRepository from "~/models/EventRepository";
-import TokenIndexingService, {
-  TOKEN_TRANSFER_EVENT_HASH,
-  TOKEN_TRANSFER_EVENT_INTERFACE,
-} from "~/services/TokenIndexingService";
 import TokenProcessingService from "~/services/TokenProcessingService";
 import { JobResponse } from "~/types";
 
@@ -15,6 +10,11 @@ export default async function handler(
   // if (authorization !== `Bearer ${process.env.CRON_KEY}`)
   //   return res.status(401).json({ success: false });
 
-  await TokenProcessingService.processTransferEventLogs();
-  res.status(200).json({ success: true });
+  try {
+    await TokenProcessingService.processTransferEvents();
+    res.status(200).json({ success: true });
+  } catch (e: any) {
+    console.log(e.message);
+    res.status(500).json({ success: false });
+  }
 }
