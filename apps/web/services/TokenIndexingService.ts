@@ -1,33 +1,28 @@
-import { Log } from "alchemy-sdk";
-import { keccak256 } from "ethereum-cryptography/keccak";
-import { utf8ToBytes, toHex } from "ethereum-cryptography/utils";
-import { ethers } from "ethers";
-
-import { ARBITRUM_TOKEN_ADDRESS } from "~/constants";
-import alchemy, { getLogsDangerously } from "~/lib/alchemy";
+import {
+  ARBITRUM_TOKEN_ADDRESS,
+  TRANSFER_EVENT_HASH,
+  TRANSFER_EVENT_INTERFACE,
+} from "~/constants";
+import alchemy, { getLogDangerously } from "~/lib/alchemy";
+import EventRepository from "~/models/EventRepository";
 
 const CONTRACT_DEPLOY_BLOCK = 70397784;
 
-export const TOKEN_TRANSFER_EVENT_HASH = toHex(
-  keccak256(utf8ToBytes("Transfer(address,address,uint256)"))
-);
-export const TOKEN_TRANSFER_EVENT_INTERFACE = ethers.Interface.from([
-  "event Transfer(address indexed from, address indexed to, uint256 value)",
-]);
-
 export default class TokenIndexingService {
-  public static async fetchTransferEventLogs(
-    fromBlock: number = CONTRACT_DEPLOY_BLOCK,
-    toBlock?: number
-  ): Promise<Log[]> {
-    const logs = await getLogsDangerously(
+  public static async indexTransferEvents() {
+    const latestLog = await EventRepository.findLatest({
+      eventHash: TRANSFER_EVENT_HASH,
+    });
+    const fromBlock = latestLog?.blockNumber || CONTRACT_DEPLOY_BLOCK;
+    const toBlock = await alchemy.core.getBlockNumber();
+    const logs = await getLogDangerously(
       {
         address: ARBITRUM_TOKEN_ADDRESS,
-        topics: [`0x${TOKEN_TRANSFER_EVENT_HASH}`],
+        topics: [`0x${TRANSFER_EVENT_HASH}`],
       },
-      Math.max(fromBlock, CONTRACT_DEPLOY_BLOCK),
-      toBlock || (await alchemy.core.getBlockNumber())
+      fromBlock,
+      toBlock
     );
-    return logs;
+    await EventRepository.createEventsFromLogs(logs, TRANSFER_EVENT_INTERFACE);
   }
 }

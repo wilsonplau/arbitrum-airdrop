@@ -1,31 +1,29 @@
 import { Event } from "@prisma/client";
-import { keccak256 } from "ethereum-cryptography/keccak";
-import { toHex, utf8ToBytes } from "ethereum-cryptography/utils";
-import { ethers, ZeroAddress } from "ethers";
-
-import { ARBITRUM_TOKEN_ADDRESS, ARBITRUM_TOKEN_DECIMALS } from "~/constants";
+import { ZeroAddress } from "ethers";
+import {
+  ARBITRUM_TOKEN_ADDRESS,
+  ARBITRUM_TOKEN_DECIMALS,
+  TRANSFER_EVENT_HASH,
+  TRANSFER_EVENT_INTERFACE,
+} from "~/constants";
 import prisma from "~/prisma";
 
-export const TOKEN_TRANSFER_EVENT_HASH = toHex(
-  keccak256(utf8ToBytes("Transfer(address,address,uint256)"))
-);
-export const TOKEN_TRANSFER_EVENT_INTERFACE = ethers.Interface.from([
-  "event Transfer(address indexed from, address indexed to, uint256 value)",
-]);
+const BATCH_SIZE = 1000;
 
 export default class TokenProcessingService {
-  public static async processTransferEventLogs(): Promise<void> {
+  public static async processTransferEvents(): Promise<void> {
     const logs = await prisma.event.findMany({
       where: {
-        eventHash: `0x${TOKEN_TRANSFER_EVENT_HASH}`,
+        eventHash: `0x${TRANSFER_EVENT_HASH}`,
         isProcessed: false,
       },
       orderBy: [{ blockNumber: "asc" }, { logIndex: "asc" }],
+      take: BATCH_SIZE,
     });
-    for (const log of logs) await this.processTransferEventLog(log);
+    for (const log of logs) await this.processTransferEvent(log);
   }
-  private static async processTransferEventLog(log: Event): Promise<void> {
-    const logDescription = TOKEN_TRANSFER_EVENT_INTERFACE.parseLog(log);
+  private static async processTransferEvent(event: Event): Promise<void> {
+    const logDescription = TRANSFER_EVENT_INTERFACE.parseLog(event);
     if (!logDescription) return;
 
     const from = logDescription.args[0] as string;
@@ -51,7 +49,6 @@ export default class TokenProcessingService {
           data: {
             balanceString: newBalance.toString(),
             balanceNumber,
-            events: { connect: { id: log.id } },
           },
         })
       );
@@ -70,7 +67,6 @@ export default class TokenProcessingService {
             data: {
               balanceString: newBalance.toString(),
               balanceNumber,
-              events: { connect: { id: log.id } },
             },
           })
         );
@@ -84,7 +80,6 @@ export default class TokenProcessingService {
               balanceString: value.toString(),
               balanceNumber,
               token: ARBITRUM_TOKEN_ADDRESS,
-              events: { connect: { id: log.id } },
             },
           })
         );
@@ -92,7 +87,7 @@ export default class TokenProcessingService {
     }
     updates.push(
       prisma.event.update({
-        where: { id: log.id },
+        where: { id: event.id },
         data: { isProcessed: true },
       })
     );
