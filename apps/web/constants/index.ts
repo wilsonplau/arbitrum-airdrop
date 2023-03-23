@@ -8,6 +8,17 @@ export const ARBITRUM_USER_AIRDROP_ADDRESS =
   "0x67a24ce4321ab3af51c2d0a4801c3e111d88c9d9";
 export const ARBITRUM_TOKEN_DECIMALS = 18;
 
+export const ARBITRUM_TOKEN_SUPPLY = 10_000_000_000;
+export const TOKEN_DISTRIBUTION_LINK =
+  "https://docs.arbitrum.foundation/airdrop-eligibility-distribution";
+export const TOKEN_DISTRIBUTION = [
+  { name: "Arbitrum DAO Treasury", amount: 4_278_000_000 },
+  { name: "Offchain Labs Team", amount: 2_694_000_000 },
+  { name: "Offchain Labs Investors", amount: 1_753_000_000 },
+  { name: "User Airdrop", amount: 1_162_000_000 },
+  { name: "DAO Airdrop", amount: 113_000_000 },
+];
+
 export const CAN_CLAIM_EVENT_HASH = toHex(
   keccak256(utf8ToBytes("CanClaim(address,uint256)"))
 );
