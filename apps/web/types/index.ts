@@ -5,6 +5,15 @@ export interface TokenBalanceClient {
   balance: number;
 }
 
+export interface ClaimClient {
+  address: string;
+  amountString: string;
+  amountNumber: number;
+  hasClaimed: boolean;
+  claimedAmountString: string;
+  claimedAmountNumber: number;
+}
+
 export interface GetClaimsRequest {
   address?: string | string[];
   cursor?: string | string[];
@@ -12,7 +21,7 @@ export interface GetClaimsRequest {
 }
 
 export interface GetClaimsResponse {
-  claims: Claim[];
+  claims: ClaimClient[];
 }
 
 export interface GetClaimStatsResponse {

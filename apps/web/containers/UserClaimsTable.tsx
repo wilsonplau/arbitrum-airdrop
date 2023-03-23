@@ -1,5 +1,9 @@
 import React from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import {
+  CheckIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/20/solid";
 import useUserAirdropClaims from "~/hooks/useUserAirdropClaims";
 
 const UserClaimsTable: React.FC = () => {
@@ -53,7 +57,10 @@ const UserClaimsTable: React.FC = () => {
                       {claim.address}
                     </td>
                     <td className="whitespace-nowrap py-4 px-3 text-center text-sm text-white">
-                      {claim.amountNumber}
+                      {claim.amountNumber.toLocaleString("en-US")}
+                    </td>
+                    <td className="flex justify-center whitespace-nowrap py-4 px-3 align-middle text-sm text-white">
+                      {claim.hasClaimed ? <CheckIcon className="h-4" /> : null}
                     </td>
                   </tr>
                 ))}
