@@ -36,6 +36,10 @@ model Event {
   isProcessed      Boolean        @default(false)
   tokenBalances    TokenBalance[]
   claims           Claim[]
+
+  @@index([blockNumber, logIndex])
+  @@index([eventHash])
+  @@index([isProcessed])
 }
 
 model TokenBalance {
