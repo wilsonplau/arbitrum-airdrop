@@ -1,12 +1,14 @@
 import prisma from "~/prisma";
 import { Prisma, TokenBalance } from "@prisma/client";
-import { ARBITRUM_TOKEN_ADDRESS } from "~/constants";
 import { TokenBalanceClient } from "~/types";
 
 export default class TokenBalanceRepository {
+  static async refresh() {
+    await prisma.$executeRaw`REFRESH MATERIALIZED VIEW "TokenBalance";`;
+  }
   static async count(): Promise<number> {
     return prisma.tokenBalance.count({
-      where: { token: ARBITRUM_TOKEN_ADDRESS, balanceNumber: { gt: 0 } },
+      where: { balance: { gt: 0 } },
     });
   }
   static async create(
@@ -24,8 +26,8 @@ export default class TokenBalanceRepository {
     limit: number = 10
   ): Promise<TokenBalanceClient[]> {
     const data = await prisma.tokenBalance.findMany({
-      where: { token: ARBITRUM_TOKEN_ADDRESS, balanceNumber: { gt: 0 } },
-      orderBy: [{ balanceNumber: "desc" }, { address: "asc" }],
+      where: { balance: { gt: 0 } },
+      orderBy: [{ balance: "desc" }, { address: "asc" }],
       cursor: cursor ? { address: cursor } : undefined,
       take: limit,
       skip: cursor ? 1 : 0,
@@ -39,13 +41,12 @@ export default class TokenBalanceRepository {
   ): Promise<TokenBalanceClient[]> {
     // Only support findMany by partial address
     const where: Prisma.TokenBalanceWhereInput = {
-      token: ARBITRUM_TOKEN_ADDRESS,
-      balanceNumber: { gt: 0 },
+      balance: { gt: 0 },
     };
     if (query.address) where["address"] = { contains: query.address };
     const data = await prisma.tokenBalance.findMany({
       where,
-      orderBy: [{ balanceNumber: "desc" }, { address: "asc" }],
+      orderBy: [{ balance: "desc" }, { address: "asc" }],
       cursor: cursor ? { address: cursor } : undefined,
       take: limit,
       skip: cursor ? 1 : 0,
@@ -67,7 +68,7 @@ export default class TokenBalanceRepository {
   ): TokenBalanceClient {
     return {
       address: tokenBalance.address,
-      balance: Number(tokenBalance.balanceNumber),
+      balance: tokenBalance.balance.toFixed(),
     };
   }
 }
