@@ -29,7 +29,13 @@ export default class TokenProcessingService {
     const from = logDescription.args[0] as string;
     const to = logDescription.args[1] as string;
     const value = logDescription.args[2] as string;
-    if (BigInt(value) === BigInt(0)) return;
+    if (BigInt(value) === BigInt(0) || from === to) {
+      await prisma.event.update({
+        where: { id: event.id },
+        data: { isProcessed: true },
+      });
+      return;
+    }
 
     const updates = [];
 
