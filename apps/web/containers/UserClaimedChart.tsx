@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   Line,
   LineChart,
@@ -13,12 +13,11 @@ import { convertTokenAmount } from "~/utils";
 
 const UserClaimedChart: React.FC = () => {
   const [dataKey, setDataKey] = useState<"sum" | "count">("count");
-  const { data: distributionData } = useQuery(["claimed", "distribution"], () =>
-    apiClient.getClaimedDistribution()
+  const { data: distributionData } = useQuery(
+    ["claimed", "distribution"],
+    apiClient.getClaimedDistribution
   );
-
-  if (!distributionData) return <div>Loading...</div>;
-  const data = distributionData.data.map(({ blockNumber, sum, count }) => ({
+  const data = distributionData?.data.map(({ blockNumber, sum, count }) => ({
     blockNumber,
     sum: convertTokenAmount(sum),
     count,
@@ -66,33 +65,37 @@ const UserClaimedChart: React.FC = () => {
             : "How many tokens have been claimed in the airdrop so far?"}
         </h2>
       </div>
-      <div className="h-[300px] w-full">
-        <ResponsiveContainer>
-          <LineChart data={data}>
-            <XAxis
-              dataKey="blockNumber"
-              stroke="white"
-              tick={{ fontSize: 12 }}
-            />
-            <YAxis
-              dataKey={dataKey}
-              stroke="white"
-              tickFormatter={(value) =>
-                new Intl.NumberFormat("en-US", {
-                  notation: "compact",
-                  compactDisplay: "short",
-                }).format(value)
-              }
-              tick={{ fontSize: 12 }}
-            />
-            <Line dataKey={dataKey} stroke="white" />
-            <Tooltip
-              content={<CustomTooltip />}
-              wrapperStyle={{ outline: "none" }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      {data ? (
+        <div className="h-[300px] w-full">
+          <ResponsiveContainer>
+            <LineChart data={data}>
+              <XAxis
+                dataKey="blockNumber"
+                stroke="white"
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis
+                dataKey={dataKey}
+                stroke="white"
+                tickFormatter={(value) =>
+                  new Intl.NumberFormat("en-US", {
+                    notation: "compact",
+                    compactDisplay: "short",
+                  }).format(value)
+                }
+                tick={{ fontSize: 12 }}
+              />
+              <Line dataKey={dataKey} stroke="white" />
+              <Tooltip
+                content={<CustomTooltip />}
+                wrapperStyle={{ outline: "none" }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      ) : (
+        <div className="h-[300px] w-full rounded bg-gray-700" />
+      )}
     </div>
   );
 };
