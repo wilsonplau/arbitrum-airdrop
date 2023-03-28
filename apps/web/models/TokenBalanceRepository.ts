@@ -43,7 +43,8 @@ export default class TokenBalanceRepository {
     const where: Prisma.TokenBalanceWhereInput = {
       balance: { gt: 0 },
     };
-    if (query.address) where["address"] = { contains: query.address };
+    if (query.address)
+      where["address"] = { contains: query.address.toLowerCase() };
     const data = await prisma.tokenBalance.findMany({
       where,
       orderBy: [{ balance: "desc" }, { address: "asc" }],

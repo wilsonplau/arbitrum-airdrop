@@ -29,7 +29,8 @@ export default class ClaimRepository {
   ) {
     // Only support findMany by partial address
     const where: Prisma.ClaimWhereInput = {};
-    if (query.address) where["address"] = { contains: query.address };
+    if (query.address)
+      where["address"] = { contains: query.address.toLowerCase() };
     const results = await prisma.claim.findMany({
       where,
       orderBy: [{ amount: "desc" }, { address: "asc" }],

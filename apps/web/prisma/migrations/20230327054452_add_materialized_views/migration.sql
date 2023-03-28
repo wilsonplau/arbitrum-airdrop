@@ -5,7 +5,7 @@ CREATE MATERIALIZED VIEW "TokenBalance" AS
 	), transfersTo AS (
 		SELECT "to" AS address, SUM(value) AS valueTo FROM "TransferEvent" GROUP BY "to"
 	) SELECT 
-			COALESCE(transfersFrom.address, transfersTo.address) AS address, 
+			LOWER(COALESCE(transfersFrom.address, transfersTo.address)) AS address, 
 			(COALESCE(valueTo,0) - COALESCE(valueFrom, 0)) AS balance 
 			FROM transfersFrom FULL OUTER JOIN transfersTo ON transfersFrom.address = transfersTo.address;
 
@@ -15,7 +15,7 @@ CREATE MATERIALIZED VIEW "Claim" AS
 	), claimed AS (
 		SELECT address, SUM(amount) as "claimedAmount" FROM "HasClaimedEvent" GROUP BY address
 	) SELECT 
-			COALESCE(claimed.address, claims.address) as address, 
+			LOWER(COALESCE(claimed.address, claims.address)) as address, 
 			COALESCE(amount, 0) as "amount",
 			COALESCE("claimedAmount", 0) as "claimedAmount",
 			COALESCE("claimedAmount" > 0, FALSE) AS "hasClaimed" 
