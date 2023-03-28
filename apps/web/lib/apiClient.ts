@@ -15,7 +15,7 @@ export default class apiClient {
     query: string,
     cursor?: string,
     limit?: number
-  ): Promise<Claim[]> {
+  ): Promise<ClaimClient[]> {
     const res = await axios.get<GetClaimsResponse>("/claims", {
       params: { address: query, cursor, limit },
     });

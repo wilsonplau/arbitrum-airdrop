@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import TokenBalanceRepository from "~/models/TokenBalanceRepository";
 import TokenProcessingService from "~/services/TokenProcessingService";
 import { JobResponse } from "~/types";
 
@@ -12,6 +13,7 @@ export default async function handler(
 
   try {
     await TokenProcessingService.processTransferEvents();
+    //await TokenBalanceRepository.refresh();
     res.status(200).json({ success: true });
   } catch (e: any) {
     console.log(e.message);

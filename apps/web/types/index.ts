@@ -2,16 +2,14 @@ import type { Claim } from "@prisma/client";
 
 export interface TokenBalanceClient {
   address: string;
-  balance: number;
+  balance: string;
 }
 
 export interface ClaimClient {
   address: string;
-  amountString: string;
-  amountNumber: number;
+  amount: string;
+  claimedAmount: string;
   hasClaimed: boolean;
-  claimedAmountString: string;
-  claimedAmountNumber: number;
 }
 
 export interface GetClaimsRequest {
@@ -25,14 +23,14 @@ export interface GetClaimsResponse {
 }
 
 export interface GetClaimStatsResponse {
-  sum: number;
-  avg: number;
+  sum: string;
+  avg: string;
   count: number;
 }
 
 export interface GetClaimDistributionResponse {
-  count: { [key: string]: number };
-  sum: { [key: string]: number };
+  count: { [key: string]: string };
+  sum: { [key: string]: string };
 }
 
 export interface GetTokenBalancesRequest {}

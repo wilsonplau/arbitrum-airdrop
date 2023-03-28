@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import useTokenBalances from "~/hooks/useTokenBalances";
+import { ARBITRUM_TOKEN_DECIMALS } from "~/constants";
 
 const TokenBalancesTable: React.FC = () => {
   const {
@@ -50,7 +51,10 @@ const TokenBalancesTable: React.FC = () => {
                       {balance.address}
                     </td>
                     <td className="whitespace-nowrap py-4 px-3 text-center text-sm text-white">
-                      {balance.balance.toLocaleString("en-US")}
+                      {(
+                        BigInt(balance.balance) /
+                        BigInt(10 ** ARBITRUM_TOKEN_DECIMALS)
+                      ).toLocaleString("en-Us")}
                     </td>
                   </tr>
                 ))}

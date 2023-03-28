@@ -5,6 +5,7 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/20/solid";
 import useUserAirdropClaims from "~/hooks/useUserAirdropClaims";
+import { ARBITRUM_TOKEN_DECIMALS } from "~/constants";
 
 const UserClaimsTable: React.FC = () => {
   const {
@@ -57,7 +58,10 @@ const UserClaimsTable: React.FC = () => {
                       {claim.address}
                     </td>
                     <td className="whitespace-nowrap py-4 px-3 text-center text-sm text-white">
-                      {claim.amountNumber.toLocaleString("en-US")}
+                      {(
+                        BigInt(claim.amount) /
+                        BigInt(10 ** ARBITRUM_TOKEN_DECIMALS)
+                      ).toLocaleString("en-US")}
                     </td>
                     <td className="flex justify-center whitespace-nowrap py-4 px-3 align-middle text-sm text-white">
                       {claim.hasClaimed ? <CheckIcon className="h-4" /> : null}

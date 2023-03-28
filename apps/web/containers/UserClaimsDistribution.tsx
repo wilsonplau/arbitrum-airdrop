@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useQuery } from "react-query";
 import apiClient from "~/lib/apiClient";
+import { ARBITRUM_TOKEN_DECIMALS } from "~/constants";
 
 const UserClaimsDistribution: React.FC = () => {
   const [innerWidth, setInnerWidth] = useState<number>(0);
@@ -13,12 +14,19 @@ const UserClaimsDistribution: React.FC = () => {
   const data = [];
   let [totalTokens, airdropCount] = [0, 0];
   for (const amount of Object.keys(distributionData.count)) {
-    totalTokens += distributionData.sum[amount];
-    airdropCount += distributionData.count[amount];
+    const amountNumber = Number(
+      BigInt(amount) / BigInt(10 ** ARBITRUM_TOKEN_DECIMALS)
+    );
+    const sumNumber = Number(
+      BigInt(distributionData.sum[amount]) /
+        BigInt(10 ** ARBITRUM_TOKEN_DECIMALS)
+    );
+    totalTokens += sumNumber;
+    airdropCount += Number(distributionData.count[amount]);
     data.push({
-      name: Number(amount),
-      count: distributionData.count[amount],
-      sum: distributionData.sum[amount],
+      name: amountNumber,
+      count: Number(distributionData.count[amount]),
+      sum: sumNumber,
     });
   }
   const average = Math.round(totalTokens / airdropCount);

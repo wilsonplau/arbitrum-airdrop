@@ -3,6 +3,8 @@ import { Prisma } from "@prisma/client";
 import { Log } from "alchemy-sdk";
 import { Interface } from "ethers";
 
+const BATCH_SIZE = 25000;
+
 export default class EventRepository {
   static async createEventFromLog(log: Log, eventInterface: Interface) {
     const description = this.serializeLogDescription(log, eventInterface);
@@ -18,7 +20,8 @@ export default class EventRepository {
     return event;
   }
   static async createEventsFromLogs(logs: Log[], eventInterface: Interface) {
-    const data = [];
+    let counter = 0;
+    let data = [];
     for (const log of logs) {
       const description = this.serializeLogDescription(log, eventInterface);
       const id = log.transactionHash + log.logIndex;
@@ -28,12 +31,14 @@ export default class EventRepository {
         description,
         eventHash: log.topics[0],
       });
+      counter += 1;
+      if (counter >= BATCH_SIZE) {
+        await prisma.event.createMany({ data, skipDuplicates: true });
+        counter = 0;
+        data = [];
+      }
     }
-    const events = await prisma.event.createMany({
-      data,
-      skipDuplicates: true,
-    });
-    return events;
+    await prisma.event.createMany({ data, skipDuplicates: true });
   }
   static async findLatest(query: Prisma.EventWhereInput) {
     return prisma.event.findFirst({

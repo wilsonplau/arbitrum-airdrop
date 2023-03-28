@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -10,40 +11,68 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Claim {
-  address             String  @id
-  amountString        String
-  amountNumber        BigInt
-  hasClaimed          Boolean @default(false)
-  claimedAmountString String  @default("0")
-  claimedAmountNumber BigInt  @default(0)
-  events              Event[]
-}
-
 model Event {
-  id               String         @id // txHash + logIndex
+  id               String   @id // txHash + logIndex
   address          String
   topics           String[]
   eventHash        String // topics[0]
   data             String
-  blockNumber      Int?
+  blockNumber      Int
   transactionHash  String
-  transactionIndex Int?
+  transactionIndex Int
   blockHash        String
   logIndex         Int
   removed          Boolean
   description      Json // parsed event description
-  isProcessed      Boolean        @default(false)
-  tokenBalances    TokenBalance[]
-  claims           Claim[]
+  isProcessed      Boolean  @default(false)
+
+  @@index([blockNumber, logIndex])
+  @@index([eventHash])
+  @@index([isProcessed])
 }
 
-model TokenBalance {
-  address       String  @id
-  token         String
-  balanceString String // BigInt string
-  balanceNumber BigInt // BigInt number
-  events        Event[]
+model CanClaimEvent {
+  id               String  @id // txHash + logIndex
+  blockNumber      Int
+  blockHash        String
+  transactionHash  String
+  transactionIndex Int
+  logIndex         Int
+  address          String
+  amount           Decimal @db.Decimal(78, 0)
+}
 
-  @@index([balanceNumber])
+model HasClaimedEvent {
+  id               String  @id // txHash + logIndex
+  blockNumber      Int
+  blockHash        String
+  transactionHash  String
+  transactionIndex Int
+  logIndex         Int
+  address          String
+  amount           Decimal @db.Decimal(78, 0)
+}
+
+model TransferEvent {
+  id               String  @id // txHash + logIndex
+  blockNumber      Int
+  blockHash        String
+  transactionHash  String
+  transactionIndex Int
+  logIndex         Int
+  to               String
+  from             String
+  value            Decimal @db.Decimal(78, 0)
+}
+
+view Claim {
+  address       String  @id
+  amount        Decimal @db.Decimal(78, 0)
+  claimedAmount Decimal @db.Decimal(78, 0)
+  hasClaimed    Boolean
+}
+
+view TokenBalance {
+  address String  @id
+  balance Decimal @db.Decimal(78, 0)
 }
