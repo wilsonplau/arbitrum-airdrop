@@ -1,15 +1,17 @@
 import React from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import StatsCard from "~/components/StatsCard";
 import apiClient from "~/lib/apiClient";
 import { formatTokenAmount, formatNumber, convertTokenAmount } from "~/utils";
 
 const UserClaimedStats: React.FC = () => {
-  const { data: claimedStats } = useQuery(["claimed", "stats"], () =>
-    apiClient.getClaimedStats()
+  const { data: claimedStats } = useQuery(
+    ["claimed", "stats"],
+    apiClient.getClaimedStats
   );
-  const { data: claimStats } = useQuery(["claim", "stats"], () =>
-    apiClient.getClaimStats()
+  const { data: claimStats } = useQuery(
+    ["claim", "stats"],
+    apiClient.getClaimStats
   );
 
   const percentageAddressesClaimed =

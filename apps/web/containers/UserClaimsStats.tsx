@@ -1,12 +1,13 @@
 import React from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import StatsCard from "~/components/StatsCard";
 import apiClient from "~/lib/apiClient";
 import { formatNumber } from "~/utils";
 
 const UserClaimsStats: React.FC = () => {
-  const { data: claimStats } = useQuery(["claim", "stats"], () =>
-    apiClient.getClaimStats()
+  const { data: claimStats } = useQuery(
+    ["claim", "stats"],
+    apiClient.getClaimStats
   );
 
   return (

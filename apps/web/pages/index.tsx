@@ -1,5 +1,6 @@
 import React from "react";
 import { NextPage } from "next";
+import { dehydrate, QueryClient } from "@tanstack/react-query";
 
 import UserClaimsTable from "~/containers/UserClaimsTable";
 import UserClaimsDistribution from "~/containers/UserClaimsDistribution";
@@ -8,6 +9,7 @@ import TokenSupply from "~/containers/TokenSupply";
 import TokenDistributionChart from "~/containers/TokenDistributionChart";
 import UserClaimedStats from "~/containers/UserClaimedStats";
 import UserClaimedChart from "~/containers/UserClaimedChart";
+import apiClient from "~/lib/apiClient";
 
 const IndexPage: NextPage = () => {
   return (
@@ -40,5 +42,27 @@ const IndexPage: NextPage = () => {
     </main>
   );
 };
+
+export async function getStaticProps() {
+  const queryClient = new QueryClient();
+  const queries = [
+    queryClient.prefetchQuery(
+      ["claimed", "distribution"],
+      apiClient.getClaimedDistribution
+    ),
+    queryClient.prefetchQuery(["claimed", "stats"], apiClient.getClaimedStats),
+    queryClient.prefetchQuery(
+      ["claim", "distribution"],
+      apiClient.getClaimedDistribution
+    ),
+    queryClient.prefetchQuery(["claim", "stats"], apiClient.getClaimedStats),
+  ];
+  await Promise.all(queries);
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
 
 export default IndexPage;
