@@ -5,6 +5,7 @@ import UserClaimsTable from "~/containers/UserClaimsTable";
 import UserClaimsDistribution from "~/containers/UserClaimsDistribution";
 import TokenBalancesTable from "~/containers/TokenBalancesTable";
 import TokenSupply from "~/containers/TokenSupply";
+import TokenDistributionChart from "~/containers/TokenDistributionChart";
 
 const IndexPage: NextPage = () => {
   return (
@@ -14,8 +15,9 @@ const IndexPage: NextPage = () => {
           <h1 className="col-span-2 text-5xl font-semibold text-white">
             $ARB Token
           </h1>
-          <div>
+          <div className="flex flex-col gap-4">
             <TokenSupply />
+            <TokenDistributionChart />
           </div>
           <TokenBalancesTable />
         </div>
