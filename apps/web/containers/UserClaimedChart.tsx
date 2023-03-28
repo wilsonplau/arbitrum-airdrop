@@ -26,11 +26,14 @@ const UserClaimedChart: React.FC = () => {
 
   const CustomTooltip: React.FC = ({ payload }: any) => {
     if (!payload || !payload.length) return null;
+    const { blockNumber, sum, count } = payload[0].payload;
     return (
       <div className="relative w-[250px] bg-gray-900/90 p-4 text-white outline-none">
-        By Block Number {payload[0].payload.blockNumber.toLocaleString("en-US")}
-        , {payload[0].value.toLocaleString("en-US")} addresses had claimed the
-        airdrop.
+        By Block Number {blockNumber.toLocaleString("en-US")},{" "}
+        {dataKey === "count"
+          ? `${count.toLocaleString("en-US")} addresses had claimed the
+        airdrop.`
+          : `${sum.toLocaleString("en-US")} tokens had been claimed.`}
       </div>
     );
   };
