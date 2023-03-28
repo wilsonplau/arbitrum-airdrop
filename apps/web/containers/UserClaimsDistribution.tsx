@@ -3,6 +3,8 @@ import { Bar, BarChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useQuery } from "react-query";
 import apiClient from "~/lib/apiClient";
 import { ARBITRUM_TOKEN_DECIMALS } from "~/constants";
+import StatsCard from "~/components/StatsCard";
+import { formatNumber } from "~/utils";
 
 const UserClaimsDistribution: React.FC = () => {
   const [innerWidth, setInnerWidth] = useState<number>(0);
@@ -12,7 +14,7 @@ const UserClaimsDistribution: React.FC = () => {
   if (!distributionData) return <div>Loading...</div>;
 
   const data = [];
-  let [totalTokens, airdropCount] = [0, 0];
+  let [totalTokens, totalAddresses, airdropCount] = [0, 0, 0];
   for (const amount of Object.keys(distributionData.count)) {
     const amountNumber = Number(
       BigInt(amount) / BigInt(10 ** ARBITRUM_TOKEN_DECIMALS)
@@ -21,8 +23,10 @@ const UserClaimsDistribution: React.FC = () => {
       BigInt(distributionData.sum[amount]) /
         BigInt(10 ** ARBITRUM_TOKEN_DECIMALS)
     );
+    const countNumber = Number(distributionData.count[amount]);
     totalTokens += sumNumber;
-    airdropCount += Number(distributionData.count[amount]);
+    totalAddresses += countNumber;
+    airdropCount += countNumber;
     data.push({
       name: amountNumber,
       count: Number(distributionData.count[amount]),
@@ -52,27 +56,33 @@ const UserClaimsDistribution: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 rounded-lg bg-gray-800 p-8">
-      <div>
-        <h1 className="text-2xl text-white">Airdrop Distribution</h1>
-        <h2 className="text-lg text-gray-400">
-          How were the {totalTokens.toLocaleString("en-US")} tokens distributed
-          between addresses?
-        </h2>
+    <>
+      <StatsCard
+        heading="Number of Eligible Addresses"
+        stat={formatNumber(totalAddresses)}
+      />
+      <div className="flex flex-col gap-4 rounded-lg bg-gray-800 p-8">
+        <div>
+          <h1 className="text-2xl text-white">Airdrop Distribution</h1>
+          <h2 className="text-lg text-gray-400">
+            How were the {totalTokens.toLocaleString("en-US")} tokens
+            distributed between addresses?
+          </h2>
+        </div>
+        <div className="h-[300px] w-full">
+          <ResponsiveContainer onResize={(width) => setInnerWidth(width)}>
+            <BarChart data={data}>
+              <Tooltip
+                content={<CustomTooltip />}
+                wrapperStyle={{ outline: "none", visibility: "visible" }}
+                position={{ x: innerWidth - 250, y: 0 }}
+              />
+              <Bar dataKey="count" fill="#6b7280" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
-      <div className="h-[300px] w-full">
-        <ResponsiveContainer onResize={(width) => setInnerWidth(width)}>
-          <BarChart data={data}>
-            <Tooltip
-              content={<CustomTooltip />}
-              wrapperStyle={{ outline: "none", visibility: "visible" }}
-              position={{ x: innerWidth - 250, y: 0 }}
-            />
-            <Bar dataKey="count" fill="#6b7280" />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
+    </>
   );
 };
 

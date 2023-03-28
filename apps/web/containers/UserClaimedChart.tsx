@@ -43,7 +43,7 @@ const UserClaimedChart: React.FC = () => {
       <div>
         <div className="flex flex-row justify-between">
           <h1 className="text-2xl text-white">Airdrop Claims</h1>
-          <div className="flex flex-row">
+          <div className="flex flex-row border-2 border-gray-700">
             <button
               className="rounded border-gray-300 py-1 px-2 text-sm text-white disabled:bg-gray-900"
               disabled={dataKey == "count"}
