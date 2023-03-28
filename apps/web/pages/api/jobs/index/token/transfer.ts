@@ -13,7 +13,7 @@ export default async function handler(
   try {
     await TokenIndexingService.indexTransferEvents();
     res.status(200).json({ success: true });
-  } catch (e) {
+  } catch (e: any) {
     console.log(e.message);
     res.status(500).json({ success: false });
   }

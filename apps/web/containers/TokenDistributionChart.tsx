@@ -36,7 +36,7 @@ const renderActiveShape = (props: any) => {
 const TokenDistributionChart: React.FC = () => {
   const data = TOKEN_DISTRIBUTION;
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const onPieEnter = (_, i: number) => setActiveIndex(i);
+  const onPieEnter = (_: any, i: number) => setActiveIndex(i);
   const [innerWidth, setInnerWidth] = useState<number>(0);
 
   const CustomTooltip: React.FC = () => {
