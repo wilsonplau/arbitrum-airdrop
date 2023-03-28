@@ -6,6 +6,8 @@ import UserClaimsDistribution from "~/containers/UserClaimsDistribution";
 import TokenBalancesTable from "~/containers/TokenBalancesTable";
 import TokenSupply from "~/containers/TokenSupply";
 import TokenDistributionChart from "~/containers/TokenDistributionChart";
+import UserClaimedStats from "~/containers/UserClaimedStats";
+import UserClaimedChart from "~/containers/UserClaimedChart";
 
 const IndexPage: NextPage = () => {
   return (
@@ -25,8 +27,14 @@ const IndexPage: NextPage = () => {
           <h1 className="col-span-2 text-5xl font-semibold text-white">
             User Airdrop
           </h1>
-          <UserClaimsTable />
-          <UserClaimsDistribution />
+          <div className="flex flex-col gap-4">
+            <UserClaimsDistribution />
+            <UserClaimsTable />
+          </div>
+          <div className="flex flex-col gap-4">
+            <UserClaimedChart />
+            <UserClaimedStats />
+          </div>
         </div>
       </div>
     </main>

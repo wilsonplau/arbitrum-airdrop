@@ -28,9 +28,19 @@ export interface GetClaimStatsResponse {
   count: number;
 }
 
+export interface GetClaimedStatsResponse {
+  sum: string;
+  avg: string;
+  count: number;
+}
+
 export interface GetClaimDistributionResponse {
   count: { [key: string]: string };
   sum: { [key: string]: string };
+}
+
+export interface GetClaimedDistributionResponse {
+  data: { blockNumber: number; sum: string; count: number }[];
 }
 
 export interface GetTokenBalancesRequest {}

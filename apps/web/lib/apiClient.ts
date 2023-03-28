@@ -1,7 +1,8 @@
 import axios from "axios";
 import {
-  Claim,
+  GetClaimedDistributionResponse,
   GetClaimDistributionResponse,
+  GetClaimedStatsResponse,
   GetClaimsResponse,
   GetClaimStatsResponse,
   GetTokenBalancesResponse,
@@ -25,9 +26,19 @@ export default class apiClient {
     const res = await axios.get<GetClaimStatsResponse>("/claims/stats");
     return res.data;
   }
+  static async getClaimedStats(): Promise<GetClaimedStatsResponse> {
+    const res = await axios.get<GetClaimedStatsResponse>("/claimed/stats");
+    return res.data;
+  }
   static async getClaimsDistribution(): Promise<GetClaimDistributionResponse> {
     const res = await axios.get<GetClaimDistributionResponse>(
       "/claims/distribution"
+    );
+    return res.data;
+  }
+  static async getClaimedDistribution() {
+    const res = await axios.get<GetClaimedDistributionResponse>(
+      `/claimed/distribution`
     );
     return res.data;
   }
