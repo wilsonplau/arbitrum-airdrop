@@ -7,6 +7,8 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "yarn workspace @arbitrum-airdrop/web dev"
+    "dev": "yarn workspace @arbitrum-airdrop/web dev",
+    "build": "yarn workspace @arbitrum-airdrop/web build",
+    "start": "yarn workspace @arbitrum-airdrop/web start"
   }
 }

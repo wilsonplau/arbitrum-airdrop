@@ -6,9 +6,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<JobResponse>
 ) {
-  // const { authorization } = req.headers;
-  // if (authorization !== `Bearer ${process.env.CRON_KEY}`)
-  //   return res.status(401).json({ success: false });
+  const { authorization } = req.headers;
+  if (authorization !== `Bearer ${process.env.CRON_KEY}`)
+    return res.status(401).json({ success: false });
 
   try {
     await TokenIndexingService.indexTransferEvents();
