@@ -1,6 +1,7 @@
 import prisma from "~/prisma";
 import { Prisma, Claim } from "@prisma/client";
 import { ClaimClient } from "~/types";
+import { convertTokenAmount } from "~/utils";
 
 export default class ClaimRepository {
   static async refresh() {
@@ -40,7 +41,7 @@ export default class ClaimRepository {
     });
     return results.map(this.convertToClient);
   }
-  static async getStats(): Promise<{
+  static async getClaimStats(): Promise<{
     sum: string;
     avg: string;
     count: number;
@@ -56,7 +57,24 @@ export default class ClaimRepository {
       count: agg._count || 0,
     };
   }
-  static async getDistribution(): Promise<{
+  static async getClaimedStats(): Promise<{
+    sum: string;
+    avg: string;
+    count: number;
+  }> {
+    const agg = await prisma.claim.aggregate({
+      _sum: { claimedAmount: true },
+      _avg: { claimedAmount: true },
+      _count: true,
+      where: { hasClaimed: true },
+    });
+    return {
+      sum: agg._sum.claimedAmount?.toFixed() || "0",
+      avg: agg._avg.claimedAmount?.toFixed() || "0",
+      count: agg._count || 0,
+    };
+  }
+  static async getClaimDistribution(): Promise<{
     count: { [key: string]: string };
     sum: { [key: string]: string };
   }> {
@@ -72,6 +90,33 @@ export default class ClaimRepository {
       sum[result.amount.toFixed()] = result._sum.amount?.toFixed() || "0";
     }
     return { count, sum };
+  }
+  static async getClaimedDistribution() {
+    const data = await prisma.$queryRaw<
+      {
+        blockNumber: number;
+        sum: Prisma.Decimal;
+        count: number;
+      }[]
+    >`
+      WITH roundedBlockNumbers AS (
+	      SELECT 
+          SUM(amount) AS sum, 
+          COUNT(*) AS count,
+          ROUND("HasClaimedEvent"."blockNumber",-4) AS "blockNumber"
+        FROM "HasClaimedEvent"
+  	    GROUP BY ROUND("HasClaimedEvent"."blockNumber",-4)
+      ) SELECT 
+          "blockNumber", 
+          SUM(sum) OVER (ORDER BY "blockNumber") AS sum,
+	        SUM(count) OVER (ORDER BY "blockNumber") AS count
+        FROM roundedBlockNumbers;
+  `;
+    return data.map(({ blockNumber, sum, count }) => ({
+      blockNumber: Number(blockNumber),
+      sum: sum.toFixed(),
+      count: Number(count),
+    }));
   }
   private static convertToClient(claim: Claim): ClaimClient {
     return {
