@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, Tooltip } from "recharts";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import apiClient from "~/lib/apiClient";
 import { ARBITRUM_TOKEN_DECIMALS } from "~/constants";
 import StatsCard from "~/components/StatsCard";
@@ -8,8 +8,9 @@ import { formatNumber } from "~/utils";
 
 const UserClaimsDistribution: React.FC = () => {
   const [innerWidth, setInnerWidth] = useState<number>(0);
-  const { data: distributionData } = useQuery(["userClaimsDistribution"], () =>
-    apiClient.getClaimsDistribution()
+  const { data: distributionData } = useQuery(
+    ["claim", "distribution"],
+    apiClient.getClaimsDistribution
   );
   if (!distributionData) return <div>Loading...</div>;
 
