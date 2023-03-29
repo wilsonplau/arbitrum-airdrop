@@ -1,0 +1,20 @@
+{
+  "crons": [
+    {
+      "path": "/api/jobs/index/token/transfer?key=G4uZTfdMBUwsCz77NxdhCLnK2nZp3t",
+      "cron": "0,30 * * * *"
+    },
+    {
+      "path": "/api/jobs/index/user-airdrop/has-claimed?key=G4uZTfdMBUwsCz77NxdhCLnK2nZp3t",
+      "cron": "0,30 * * * *"
+    },
+    {
+      "path": "/api/jobs/process/token/transfer?key=G4uZTfdMBUwsCz77NxdhCLnK2nZp3t",
+      "cron": "15,45 * * * *"
+    },
+    {
+      "path": "/api/jobs/process/user-airdrop/has-claimed?key=G4uZTfdMBUwsCz77NxdhCLnK2nZp3t",
+      "cron": "15,45 * * * *"
+    }
+  ]
+}
