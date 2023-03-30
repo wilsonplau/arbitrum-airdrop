@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { utils } from "ethers";
 import { NextApiRequest, NextApiResponse } from "next";
 
 import alchemy from "~/lib/alchemy";
@@ -15,7 +15,7 @@ export default async function handler(
   }
 
   try {
-    const totalSupplyInterface = new ethers.Interface([
+    const totalSupplyInterface = new utils.Interface([
       "function totalSupply() external view returns (uint256)",
     ]);
     const totalSupplyData =
