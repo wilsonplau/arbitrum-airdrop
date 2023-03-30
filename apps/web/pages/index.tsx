@@ -10,6 +10,7 @@ import TokenDistributionChart from "~/containers/TokenDistributionChart";
 import UserClaimedStats from "~/containers/UserClaimedStats";
 import UserClaimedChart from "~/containers/UserClaimedChart";
 import apiClient from "~/lib/apiClient";
+import AirdropClaimForm from "~/containers/AirdropClaimForm";
 
 const IndexPage: NextPage = () => {
   return (
@@ -19,6 +20,9 @@ const IndexPage: NextPage = () => {
           <h1 className="col-span-2 text-5xl font-semibold text-white">
             $ARB Token
           </h1>
+          <div className="col-span-2">
+            <AirdropClaimForm />
+          </div>
           <div className="flex flex-col gap-4">
             <TokenSupply />
             <TokenDistributionChart />
