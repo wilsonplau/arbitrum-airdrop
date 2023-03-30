@@ -1,12 +1,12 @@
 import prisma from "~/prisma";
 import { Prisma } from "@prisma/client";
 import { Log } from "alchemy-sdk";
-import { Interface } from "ethers";
+import { utils } from "ethers";
 
 const BATCH_SIZE = 25000;
 
 export default class EventRepository {
-  static async createEventFromLog(log: Log, eventInterface: Interface) {
+  static async createEventFromLog(log: Log, eventInterface: utils.Interface) {
     const description = this.serializeLogDescription(log, eventInterface);
     const id = log.transactionHash + log.logIndex;
     const event = await prisma.event.create({
@@ -19,7 +19,10 @@ export default class EventRepository {
     });
     return event;
   }
-  static async createEventsFromLogs(logs: Log[], eventInterface: Interface) {
+  static async createEventsFromLogs(
+    logs: Log[],
+    eventInterface: utils.Interface
+  ) {
     let counter = 0;
     let data = [];
     for (const log of logs) {
@@ -48,7 +51,7 @@ export default class EventRepository {
   }
   private static serializeLogDescription(
     log: Log,
-    eventInterface: Interface
+    eventInterface: utils.Interface
   ): Prisma.InputJsonObject {
     const parsedLog = eventInterface.parseLog(log);
     return JSON.parse(
