@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { utils } from "ethers";
 import { keccak256 } from "ethereum-cryptography/keccak";
 import { toHex, utf8ToBytes } from "ethereum-cryptography/utils";
 
@@ -22,20 +22,20 @@ export const TOKEN_DISTRIBUTION = [
 export const CAN_CLAIM_EVENT_HASH = toHex(
   keccak256(utf8ToBytes("CanClaim(address,uint256)"))
 );
-export const CAN_CLAIM_EVENT_INTERFACE = ethers.Interface.from([
+export const CAN_CLAIM_EVENT_INTERFACE = new utils.Interface([
   "event CanClaim(address indexed recipient, uint256 amount)",
 ]);
 
 export const HAS_CLAIMED_EVENT_HASH = toHex(
   keccak256(utf8ToBytes("HasClaimed(address,uint256)"))
 );
-export const HAS_CLAIMED_EVENT_INTERFACE = ethers.Interface.from([
+export const HAS_CLAIMED_EVENT_INTERFACE = new utils.Interface([
   "event HasClaimed(address indexed recipient, uint256 amount)",
 ]);
 
 export const TRANSFER_EVENT_HASH = toHex(
   keccak256(utf8ToBytes("Transfer(address,address,uint256)"))
 );
-export const TRANSFER_EVENT_INTERFACE = ethers.Interface.from([
+export const TRANSFER_EVENT_INTERFACE = new utils.Interface([
   "event Transfer(address indexed from, address indexed to, uint256 value)",
 ]);

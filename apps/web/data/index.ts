@@ -1,6 +1,6 @@
 import { keccak256 } from "ethereum-cryptography/keccak";
 import { utf8ToBytes, toHex } from "ethereum-cryptography/utils";
-import { ethers, LogDescription } from "ethers";
+import { utils } from "ethers";
 
 import { ARBITRUM_USER_AIRDROP_ADDRESS } from "~/constants";
 import alchemy from "~/lib/alchemy";
@@ -29,13 +29,13 @@ export async function getAirdropRecipients(fromBlock: number, toBlock: number) {
 export async function getCanClaimEventLogs(
   fromBlock: number,
   toBlock: number
-): Promise<LogDescription[]> {
-  const output: LogDescription[] = [];
+): Promise<utils.LogDescription[]> {
+  const output: utils.LogDescription[] = [];
   try {
     const canClaimEventHash = toHex(
       keccak256(utf8ToBytes("CanClaim(address,uint256)"))
     );
-    const canClaimEventInterface = ethers.Interface.from([
+    const canClaimEventInterface = new utils.Interface([
       "event CanClaim(address indexed recipient, uint256 amount)",
     ]);
     const logs = await alchemy.core.getLogs({
