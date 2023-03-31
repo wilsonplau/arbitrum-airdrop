@@ -21,7 +21,8 @@ export default class TokenIndexingService {
         topics: [`0x${TRANSFER_EVENT_HASH}`],
       },
       fromBlock,
-      toBlock
+      toBlock,
+      5
     );
     await EventRepository.createEventsFromLogs(logs, TRANSFER_EVENT_INTERFACE);
   }
