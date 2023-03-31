@@ -13,7 +13,7 @@ export default async function handler(
 
   try {
     await TokenProcessingService.processTransferEvents();
-    await TokenBalanceRepository.refresh();
+    TokenBalanceRepository.refresh();
     res.status(200).json({ success: true });
   } catch (e: any) {
     console.log(e.message);

@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import { TRANSFER_EVENT_HASH, TRANSFER_EVENT_INTERFACE } from "~/constants";
 import prisma from "~/prisma";
 
-const BATCH_SIZE = 25000;
+const BATCH_SIZE = 10000;
 
 export default class TokenProcessingService {
   public static async processTransferEvents(): Promise<void> {
