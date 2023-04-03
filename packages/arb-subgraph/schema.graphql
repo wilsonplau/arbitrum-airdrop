@@ -1,0 +1,71 @@
+type CanClaimEvent @entity(immutable: true) {
+  id: Bytes!
+  recipient: Bytes! # address
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type HasClaimedEvent @entity(immutable: true) {
+  id: Bytes!
+  recipient: Bytes! # address
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TransferEvent @entity(immutable: true) {
+  id: Bytes!
+  to: Bytes! # address
+  from: Bytes! #address
+  value: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type DelegateVotesChangedEvent @entity(immutable: true) {
+  id: Bytes!
+  delegate: Bytes! # address
+  previousBalance: BigInt! # uint256
+  newBalance: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type AirdropClaim @entity {
+  id: Bytes! # address
+  amount: BigInt! # uint256
+  claimedAmount: BigInt! # uint256
+  hasClaimed: Boolean!
+}
+
+type AirdropStats @entity {
+  id: ID!
+  totalAmount: BigInt! # uint256
+  totalClaimedAmount: BigInt! # uint256
+  totalRecipients: BigInt! # uint256
+  totalClaimedRecipients: BigInt! # uint256
+}
+
+type TokenBalance @entity {
+  id: Bytes! # address
+  address: Bytes! # address
+  balance: BigInt! # uint256
+}
+
+type DailyTransferStat @entity {
+  id: ID!
+  timestamp: Int! # timestamp
+  totalTransfers: BigInt! # uint256
+  totalTransfersAmount: BigInt! # uint256
+}
+
+type DelegateVotesBalance @entity {
+  id: Bytes! # address
+  address: Bytes! # address
+  balance: BigInt! # uint256
+}
