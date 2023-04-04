@@ -10,7 +10,8 @@
     "prisma:push": "prisma db push",
     "prisma:migrate": "prisma migrate dev",
     "prisma:reset": "prisma migrate reset",
-    "prisma:seed": "ts-node prisma/seed.ts"
+    "prisma:seed": "ts-node prisma/seed.ts",
+    "graphql:generate": "graphql-codegen"
   },
   "dependencies": {
     "@headlessui/react": "1.7.13",
@@ -27,6 +28,7 @@
     "eslint-config-next": "13.2.4",
     "ethereum-cryptography": "1.2.0",
     "ethers": "5.7.2",
+    "graphql-request": "5.2.0",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -35,6 +37,8 @@
     "wagmi": "0.12.8"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "3.2.2",
+    "@graphql-codegen/client-preset": "2.1.1",
     "autoprefixer": "10.4.14",
     "postcss": "8.4.21",
     "prettier": "2.8.4",

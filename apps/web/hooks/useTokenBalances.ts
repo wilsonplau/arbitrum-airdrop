@@ -1,52 +1,36 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "~/lib/apiClient";
+import graphQLClient from "~/lib/graphQLClient";
 
 export default function useTokenBalances() {
   const PAGE_SIZE = 5;
-
-  const [cursors, setCursors] = useState<string[]>([]);
-  const cursor = cursors.length == 0 ? undefined : cursors[cursors.length - 1];
+  const [page, setPage] = useState<number>(0);
+  const handleNext = () => setPage((prev) => prev + 1);
+  const handlePrev = () => setPage((prev) => Math.max(prev - 1, 0));
 
   const [address, setAddress] = useState<string>("");
   const [query, setQuery] = useState<string>("");
 
   useEffect(() => {
     setAddress(query);
-    setCursors([]);
+    setPage(0);
   }, [query]);
 
   const { data } = useQuery(
-    ["token", "balances", { address, cursor }],
-    () => apiClient.getTokenBalances(address, cursor, PAGE_SIZE),
+    ["token", "balances", { address, page }],
+    () => graphQLClient.getTokenBalances(address, page * PAGE_SIZE, PAGE_SIZE),
     { keepPreviousData: true }
   );
-  const balances = data?.balances || [];
-  const count = data?.count || 0;
-
-  const handleNext = () => {
-    setCursors((cursors) => {
-      const next = [...cursors, balances[balances.length - 1].address];
-      return next;
-    });
-  };
-  const handlePrev = () => {
-    setCursors((cursors) => {
-      const prev = [...cursors];
-      prev.pop();
-      return prev;
-    });
-  };
+  const balances = data || [];
 
   return {
     query,
     setQuery,
     balances,
-    count,
-    pageNumber: cursors.length,
+    pageNumber: page,
     pageSize: PAGE_SIZE,
-    isFirstPage: cursors.length == 0,
-    isLastPage: balances.length < PAGE_SIZE,
+    isFirstPage: page == 0,
+    isLastPage: balances && balances.length < PAGE_SIZE,
     handleNext,
     handlePrev,
   };

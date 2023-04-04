@@ -1,0 +1,53 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: TokenDistributor
+    network: arbitrum-one
+    source:
+      address: "0x67a24CE4321aB3aF51c2D0a4801c3E111D88C9d9"
+      abi: TokenDistributor
+      startBlock: 70506643
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CanClaim
+        - HasClaimed
+        - OwnershipTransferred
+        - SweepReceiverSet
+        - Swept
+        - Withdrawal
+      abis:
+        - name: TokenDistributor
+          file: ./abis/TokenDistributor.json
+      eventHandlers:
+        - event: CanClaim(indexed address,uint256)
+          handler: handleCanClaim
+        - event: HasClaimed(indexed address,uint256)
+          handler: handleHasClaimed
+      file: ./src/token-distributor.ts
+  - kind: ethereum
+    name: L2ArbitrumToken
+    network: arbitrum-one
+    source:
+      address: "0x912CE59144191C1204E64559FE8253a0e49E6548"
+      abi: L2ArbitrumToken
+      startBlock: 70398215
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Transfer
+      abis:
+        - name: L2ArbitrumToken
+          file: ./abis/L2ArbitrumToken.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: DelegateVotesChanged(indexed address,uint256,uint256)
+          handler: handleDelegateVotesChanged
+      file: ./src/l-2-arbitrum-token.ts
