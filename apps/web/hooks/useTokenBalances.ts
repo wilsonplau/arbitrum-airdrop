@@ -4,8 +4,9 @@ import graphQLClient from "~/lib/graphQLClient";
 
 export default function useTokenBalances() {
   const PAGE_SIZE = 5;
-
   const [page, setPage] = useState<number>(0);
+  const handleNext = () => setPage((prev) => prev + 1);
+  const handlePrev = () => setPage((prev) => Math.max(prev - 1, 0));
 
   const [address, setAddress] = useState<string>("");
   const [query, setQuery] = useState<string>("");
@@ -21,9 +22,6 @@ export default function useTokenBalances() {
     { keepPreviousData: true }
   );
   const balances = data || [];
-
-  const handleNext = () => setPage((prev) => prev + 1);
-  const handlePrev = () => setPage((prev) => Math.max(prev - 1, 0));
 
   return {
     query,
