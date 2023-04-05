@@ -1,0 +1,21 @@
+{
+  "name": "@arbitrum-airdrop/arb-subgraph",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ wilsonplau/arb-subgraph",
+    "create-local": "graph create --node http://localhost:8020/ wilsonplau/arb-subgraph",
+    "remove-local": "graph remove --node http://localhost:8020/ wilsonplau/arb-subgraph",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 wilsonplau/arb-subgraph",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.38.0",
+    "@graphprotocol/graph-ts": "0.29.1"
+  },
+  "devDependencies": {
+    "matchstick-as": "0.5.0"
+  }
+}
