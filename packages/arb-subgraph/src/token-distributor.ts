@@ -1,40 +1,15 @@
-import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
   CanClaim,
   HasClaimed,
 } from "../generated/TokenDistributor/TokenDistributor";
+import { CanClaimEvent, HasClaimedEvent } from "../generated/schema";
+import { INCREMENT } from "./constants";
 import {
-  CanClaimEvent,
-  HasClaimedEvent,
-  AirdropStats,
-  AirdropClaim,
-} from "../generated/schema";
-
-let TOTAL_ID = "total";
-let INCREMENT = BigInt.fromI32(1);
-
-function _loadOrCreateTotalEntity(): AirdropStats {
-  let totalEntity = AirdropStats.load(TOTAL_ID);
-  if (totalEntity == null) {
-    totalEntity = new AirdropStats(TOTAL_ID);
-    totalEntity.totalAmount = BigInt.fromI32(0);
-    totalEntity.totalClaimedAmount = BigInt.fromI32(0);
-    totalEntity.totalRecipients = BigInt.fromI32(0);
-    totalEntity.totalClaimedRecipients = BigInt.fromI32(0);
-  }
-  return totalEntity;
-}
-
-function _loadOrCreateAirdropClaimEntity(address: Bytes): AirdropClaim {
-  let airdropClaimEntity = AirdropClaim.load(address);
-  if (airdropClaimEntity == null) {
-    airdropClaimEntity = new AirdropClaim(address);
-    airdropClaimEntity.amount = BigInt.fromI32(0);
-    airdropClaimEntity.claimedAmount = BigInt.fromI32(0);
-    airdropClaimEntity.hasClaimed = false;
-  }
-  return airdropClaimEntity;
-}
+  _loadOrCreateAirdropStats,
+  _loadOrCreateAirdropClaim,
+  _loadOrCreateAirdropDistributionStat,
+  _loadOrCreateCumulativeAirdropClaimStat,
+} from "./helpers";
 
 export function handleCanClaim(event: CanClaim): void {
   let eventEntity = new CanClaimEvent(
@@ -47,18 +22,23 @@ export function handleCanClaim(event: CanClaim): void {
   eventEntity.transactionHash = event.transaction.hash;
   eventEntity.save();
 
-  let totalEntity = _loadOrCreateTotalEntity();
-  totalEntity.totalAmount = totalEntity.totalAmount.plus(event.params.amount);
-  totalEntity.totalRecipients = totalEntity.totalRecipients.plus(INCREMENT);
-  totalEntity.save();
+  let airdropStats = _loadOrCreateAirdropStats();
+  airdropStats.totalAmount = airdropStats.totalAmount.plus(event.params.amount);
+  airdropStats.totalRecipients = airdropStats.totalRecipients.plus(INCREMENT);
+  airdropStats.save();
 
-  let airdropClaimEntity = _loadOrCreateAirdropClaimEntity(
-    event.params.recipient
-  );
-  airdropClaimEntity.amount = airdropClaimEntity.amount.plus(
+  let airdropDistributionStat = _loadOrCreateAirdropDistributionStat(
     event.params.amount
   );
-  airdropClaimEntity.save();
+  airdropDistributionStat.totalAmount =
+    airdropDistributionStat.totalAmount.plus(event.params.amount);
+  airdropDistributionStat.totalRecipients =
+    airdropDistributionStat.totalRecipients.plus(INCREMENT);
+  airdropDistributionStat.save();
+
+  let airdropClaim = _loadOrCreateAirdropClaim(event.params.recipient);
+  airdropClaim.amount = airdropClaim.amount.plus(event.params.amount);
+  airdropClaim.save();
 }
 
 export function handleHasClaimed(event: HasClaimed): void {
@@ -72,20 +52,27 @@ export function handleHasClaimed(event: HasClaimed): void {
   eventEntity.transactionHash = event.transaction.hash;
   eventEntity.save();
 
-  let totalEntity = _loadOrCreateTotalEntity();
-  totalEntity.totalClaimedAmount = totalEntity.totalClaimedAmount.plus(
+  let airdropStats = _loadOrCreateAirdropStats();
+  airdropStats.totalClaimedAmount = airdropStats.totalClaimedAmount.plus(
     event.params.amount
   );
-  totalEntity.totalClaimedRecipients =
-    totalEntity.totalClaimedRecipients.plus(INCREMENT);
-  totalEntity.save();
+  airdropStats.totalClaimedRecipients =
+    airdropStats.totalClaimedRecipients.plus(INCREMENT);
+  airdropStats.save();
 
-  let airdropClaimEntity = _loadOrCreateAirdropClaimEntity(
-    event.params.recipient
-  );
-  airdropClaimEntity.claimedAmount = airdropClaimEntity.claimedAmount.plus(
+  let airdropClaim = _loadOrCreateAirdropClaim(event.params.recipient);
+  airdropClaim.claimedAmount = airdropClaim.claimedAmount.plus(
     event.params.amount
   );
-  airdropClaimEntity.hasClaimed = true;
-  airdropClaimEntity.save();
+  airdropClaim.hasClaimed = true;
+  airdropClaim.save();
+
+  let cumulativeAirdropClaimStat = _loadOrCreateCumulativeAirdropClaimStat(
+    event.block.timestamp
+  );
+  cumulativeAirdropClaimStat.totalAmount =
+    cumulativeAirdropClaimStat.totalAmount.plus(event.params.amount);
+  cumulativeAirdropClaimStat.totalRecipients =
+    cumulativeAirdropClaimStat.totalRecipients.plus(INCREMENT);
+  cumulativeAirdropClaimStat.save();
 }
