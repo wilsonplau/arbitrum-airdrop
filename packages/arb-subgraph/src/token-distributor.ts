@@ -5,7 +5,7 @@ import {
 import { CanClaimEvent, HasClaimedEvent } from "../generated/schema";
 import { INCREMENT } from "./constants";
 import {
-  _loadOrCreateAirdropStats,
+  _loadOrCreateAirdropStat,
   _loadOrCreateAirdropClaim,
   _loadOrCreateAirdropDistributionStat,
   _loadOrCreateCumulativeAirdropClaimStat,
@@ -22,7 +22,7 @@ export function handleCanClaim(event: CanClaim): void {
   eventEntity.transactionHash = event.transaction.hash;
   eventEntity.save();
 
-  let airdropStats = _loadOrCreateAirdropStats();
+  let airdropStats = _loadOrCreateAirdropStat();
   airdropStats.totalAmount = airdropStats.totalAmount.plus(event.params.amount);
   airdropStats.totalRecipients = airdropStats.totalRecipients.plus(INCREMENT);
   airdropStats.save();
@@ -52,7 +52,7 @@ export function handleHasClaimed(event: HasClaimed): void {
   eventEntity.transactionHash = event.transaction.hash;
   eventEntity.save();
 
-  let airdropStats = _loadOrCreateAirdropStats();
+  let airdropStats = _loadOrCreateAirdropStat();
   airdropStats.totalClaimedAmount = airdropStats.totalClaimedAmount.plus(
     event.params.amount
   );
