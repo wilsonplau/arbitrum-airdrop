@@ -13,6 +13,8 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n  query getAirdropDistribution {\n    airdropDistributionStats {\n      id\n      amount\n      totalAmount\n      totalRecipients\n    }\n  }\n": types.GetAirdropDistributionDocument,
+    "\n  query getAirdropStats {\n    airdropStats(first: 1) {\n      id\n      totalAmount\n      totalRecipients\n      totalClaimedAmount\n      totalClaimedRecipients\n    }\n  }\n": types.GetAirdropStatsDocument,
     "\n  query getTokenBalances($address: Bytes, $limit: Int, $skip: Int) {\n    tokenBalances(\n      where: { address_contains: $address }\n      first: $limit\n      skip: $skip\n      orderBy: balance\n      orderDirection: desc\n    ) {\n      address\n      balance\n    }\n  }\n": types.GetTokenBalancesDocument,
 };
 
@@ -30,6 +32,14 @@ const documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query getAirdropDistribution {\n    airdropDistributionStats {\n      id\n      amount\n      totalAmount\n      totalRecipients\n    }\n  }\n"): (typeof documents)["\n  query getAirdropDistribution {\n    airdropDistributionStats {\n      id\n      amount\n      totalAmount\n      totalRecipients\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query getAirdropStats {\n    airdropStats(first: 1) {\n      id\n      totalAmount\n      totalRecipients\n      totalClaimedAmount\n      totalClaimedRecipients\n    }\n  }\n"): (typeof documents)["\n  query getAirdropStats {\n    airdropStats(first: 1) {\n      id\n      totalAmount\n      totalRecipients\n      totalClaimedAmount\n      totalClaimedRecipients\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

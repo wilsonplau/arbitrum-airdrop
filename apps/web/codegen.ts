@@ -1,7 +1,11 @@
+import { loadEnvConfig } from "@next/env";
+const projectDir = process.cwd();
+loadEnvConfig(projectDir);
+
 import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: "https://api.thegraph.com/subgraphs/name/wilsonplau/arb-subgraph",
+  schema: process.env.NEXT_PUBLIC_SUBGRAPH_URL!,
   documents: ["./lib/queries/*.ts"],
   generates: {
     "./lib/gql/": {
