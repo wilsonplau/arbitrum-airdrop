@@ -4,10 +4,10 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/20/solid";
-import useUserAirdropClaims from "~/hooks/useUserAirdropClaims";
+import useAirdropClaims from "~/hooks/useAirdropClaims";
 import { ARBITRUM_TOKEN_DECIMALS } from "~/constants";
 
-const UserClaimsTable: React.FC = () => {
+const AirdropClaimsTable: React.FC = () => {
   const {
     query,
     setQuery,
@@ -18,7 +18,7 @@ const UserClaimsTable: React.FC = () => {
     isLastPage,
     handleNext,
     handlePrev,
-  } = useUserAirdropClaims();
+  } = useAirdropClaims();
   return (
     <div className="flex flex-col gap-4 rounded-lg bg-gray-800 p-8">
       <div>
@@ -53,9 +53,9 @@ const UserClaimsTable: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-gray-800">
                 {claims.map((claim) => (
-                  <tr key={claim.address}>
+                  <tr key={claim.id}>
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-white sm:pl-0">
-                      {claim.address}
+                      {claim.id}
                     </td>
                     <td className="whitespace-nowrap py-4 px-3 text-center text-sm text-white">
                       {(
@@ -116,4 +116,4 @@ const UserClaimsTable: React.FC = () => {
   );
 };
 
-export default UserClaimsTable;
+export default AirdropClaimsTable;

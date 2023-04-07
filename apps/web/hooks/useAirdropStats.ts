@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { AirdropStats } from "~/lib/gql/graphql";
+import { AirdropStat } from "~/lib/gql/graphql";
 import graphQLClient from "~/lib/graphQLClient";
 
 interface UseAirdropStatsInterface {
-  data: AirdropStats | null;
+  data: AirdropStat | null;
 }
 
 export default function useAirdropStats(): UseAirdropStatsInterface {
@@ -12,6 +12,5 @@ export default function useAirdropStats(): UseAirdropStatsInterface {
     queryFn: graphQLClient.getAirdropStats,
     initialData: null,
   });
-  console.log({ data });
   return { data };
 }

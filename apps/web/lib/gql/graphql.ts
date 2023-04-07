@@ -123,8 +123,8 @@ export enum AirdropDistributionStat_OrderBy {
   TotalRecipients = 'totalRecipients'
 }
 
-export type AirdropStats = {
-  __typename?: 'AirdropStats';
+export type AirdropStat = {
+  __typename?: 'AirdropStat';
   id: Scalars['ID'];
   totalAmount: Scalars['BigInt'];
   totalClaimedAmount: Scalars['BigInt'];
@@ -132,10 +132,10 @@ export type AirdropStats = {
   totalRecipients: Scalars['BigInt'];
 };
 
-export type AirdropStats_Filter = {
+export type AirdropStat_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<AirdropStats_Filter>>>;
+  and?: InputMaybe<Array<InputMaybe<AirdropStat_Filter>>>;
   id?: InputMaybe<Scalars['ID']>;
   id_gt?: InputMaybe<Scalars['ID']>;
   id_gte?: InputMaybe<Scalars['ID']>;
@@ -144,7 +144,7 @@ export type AirdropStats_Filter = {
   id_lte?: InputMaybe<Scalars['ID']>;
   id_not?: InputMaybe<Scalars['ID']>;
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
-  or?: InputMaybe<Array<InputMaybe<AirdropStats_Filter>>>;
+  or?: InputMaybe<Array<InputMaybe<AirdropStat_Filter>>>;
   totalAmount?: InputMaybe<Scalars['BigInt']>;
   totalAmount_gt?: InputMaybe<Scalars['BigInt']>;
   totalAmount_gte?: InputMaybe<Scalars['BigInt']>;
@@ -179,7 +179,7 @@ export type AirdropStats_Filter = {
   totalRecipients_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
 };
 
-export enum AirdropStats_OrderBy {
+export enum AirdropStat_OrderBy {
   Id = 'id',
   TotalAmount = 'totalAmount',
   TotalClaimedAmount = 'totalClaimedAmount',
@@ -617,7 +617,8 @@ export type Query = {
   airdropClaims: Array<AirdropClaim>;
   airdropDistributionStat?: Maybe<AirdropDistributionStat>;
   airdropDistributionStats: Array<AirdropDistributionStat>;
-  airdropStats: Array<AirdropStats>;
+  airdropStat?: Maybe<AirdropStat>;
+  airdropStats: Array<AirdropStat>;
   canClaimEvent?: Maybe<CanClaimEvent>;
   canClaimEvents: Array<CanClaimEvent>;
   cumulativeAirdropClaimStat?: Maybe<CumulativeAirdropClaimStat>;
@@ -678,14 +679,21 @@ export type QueryAirdropDistributionStatsArgs = {
 };
 
 
+export type QueryAirdropStatArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type QueryAirdropStatsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<AirdropStats_OrderBy>;
+  orderBy?: InputMaybe<AirdropStat_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars['Int']>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<AirdropStats_Filter>;
+  where?: InputMaybe<AirdropStat_Filter>;
 };
 
 
@@ -840,7 +848,8 @@ export type Subscription = {
   airdropClaims: Array<AirdropClaim>;
   airdropDistributionStat?: Maybe<AirdropDistributionStat>;
   airdropDistributionStats: Array<AirdropDistributionStat>;
-  airdropStats: Array<AirdropStats>;
+  airdropStat?: Maybe<AirdropStat>;
+  airdropStats: Array<AirdropStat>;
   canClaimEvent?: Maybe<CanClaimEvent>;
   canClaimEvents: Array<CanClaimEvent>;
   cumulativeAirdropClaimStat?: Maybe<CumulativeAirdropClaimStat>;
@@ -901,14 +910,21 @@ export type SubscriptionAirdropDistributionStatsArgs = {
 };
 
 
+export type SubscriptionAirdropStatArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionAirdropStatsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<AirdropStats_OrderBy>;
+  orderBy?: InputMaybe<AirdropStat_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars['Int']>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<AirdropStats_Filter>;
+  where?: InputMaybe<AirdropStat_Filter>;
 };
 
 
@@ -1229,6 +1245,15 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny'
 }
 
+export type GetAirdropClaimsQueryVariables = Exact<{
+  address: Scalars['Bytes'];
+  skip: Scalars['Int'];
+  limit: Scalars['Int'];
+}>;
+
+
+export type GetAirdropClaimsQuery = { __typename?: 'Query', airdropClaims: Array<{ __typename?: 'AirdropClaim', id: any, amount: any, claimedAmount: any, hasClaimed: boolean }> };
+
 export type GetAirdropDistributionQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1237,7 +1262,7 @@ export type GetAirdropDistributionQuery = { __typename?: 'Query', airdropDistrib
 export type GetAirdropStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAirdropStatsQuery = { __typename?: 'Query', airdropStats: Array<{ __typename?: 'AirdropStats', id: string, totalAmount: any, totalRecipients: any, totalClaimedAmount: any, totalClaimedRecipients: any }> };
+export type GetAirdropStatsQuery = { __typename?: 'Query', airdropStat?: { __typename?: 'AirdropStat', id: string, totalAmount: any, totalRecipients: any, totalClaimedAmount: any, totalClaimedRecipients: any } | null };
 
 export type GetTokenBalancesQueryVariables = Exact<{
   address?: InputMaybe<Scalars['Bytes']>;
@@ -1249,6 +1274,7 @@ export type GetTokenBalancesQueryVariables = Exact<{
 export type GetTokenBalancesQuery = { __typename?: 'Query', tokenBalances: Array<{ __typename?: 'TokenBalance', address: any, balance: any }> };
 
 
+export const GetAirdropClaimsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAirdropClaims"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"address"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Bytes"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"airdropClaims"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_contains"},"value":{"kind":"Variable","name":{"kind":"Name","value":"address"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"amount"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"desc"}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"claimedAmount"}},{"kind":"Field","name":{"kind":"Name","value":"hasClaimed"}}]}}]}}]} as unknown as DocumentNode<GetAirdropClaimsQuery, GetAirdropClaimsQueryVariables>;
 export const GetAirdropDistributionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAirdropDistribution"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"airdropDistributionStats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"totalAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalRecipients"}}]}}]}}]} as unknown as DocumentNode<GetAirdropDistributionQuery, GetAirdropDistributionQueryVariables>;
-export const GetAirdropStatsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAirdropStats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"airdropStats"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"totalAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalRecipients"}},{"kind":"Field","name":{"kind":"Name","value":"totalClaimedAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalClaimedRecipients"}}]}}]}}]} as unknown as DocumentNode<GetAirdropStatsQuery, GetAirdropStatsQueryVariables>;
+export const GetAirdropStatsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAirdropStats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"airdropStat"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"StringValue","value":"total","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"totalAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalRecipients"}},{"kind":"Field","name":{"kind":"Name","value":"totalClaimedAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalClaimedRecipients"}}]}}]}}]} as unknown as DocumentNode<GetAirdropStatsQuery, GetAirdropStatsQueryVariables>;
 export const GetTokenBalancesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getTokenBalances"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"address"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Bytes"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokenBalances"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"address_contains"},"value":{"kind":"Variable","name":{"kind":"Name","value":"address"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"balance"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"desc"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"balance"}}]}}]}}]} as unknown as DocumentNode<GetTokenBalancesQuery, GetTokenBalancesQueryVariables>;

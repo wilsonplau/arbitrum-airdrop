@@ -8,7 +8,7 @@ const AirdropStats: React.FC = () => {
   return (
     <StatsCard
       heading="Number of Eligible Addresses"
-      stat={data ? formatNumber(data.totalRecipients) : "-"}
+      stat={data ? formatNumber(Number(data.totalRecipients)) : "-"}
     />
   );
 };

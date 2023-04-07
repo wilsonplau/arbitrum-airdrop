@@ -5,12 +5,13 @@ import { dehydrate, QueryClient } from "@tanstack/react-query";
 import TokenBalancesTable from "~/containers/TokenBalancesTable";
 import TokenSupply from "~/containers/TokenSupply";
 import TokenDistributionChart from "~/containers/TokenDistributionChart";
-import UserClaimedStats from "~/containers/UserClaimedStats";
 import UserClaimedChart from "~/containers/UserClaimedChart";
 import apiClient from "~/lib/apiClient";
 import AirdropClaimForm from "~/containers/AirdropClaimForm";
 import AirdropStats from "~/containers/AirdropStats";
 import AirdropDistribution from "~/containers/AirdropDistribution";
+import AirdropClaimsTable from "~/containers/AirdropClaimsTable";
+import AirdropClaimedStats from "~/containers/AirdropClaimedStats";
 
 const IndexPage: NextPage = () => {
   return (
@@ -36,10 +37,11 @@ const IndexPage: NextPage = () => {
           <div className="flex flex-col gap-4">
             <AirdropStats />
             <AirdropDistribution />
+            <AirdropClaimsTable />
           </div>
           <div className="flex flex-col gap-4">
             <UserClaimedChart />
-            <UserClaimedStats />
+            <AirdropClaimedStats />
           </div>
         </div>
       </div>

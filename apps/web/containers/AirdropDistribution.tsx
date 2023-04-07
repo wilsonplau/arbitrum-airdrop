@@ -24,7 +24,6 @@ const AirdropDistribution: React.FC = () => {
   const average = convertTokenAmount(airdropData?.totalAmount) / airdropCount;
 
   const CustomTooltip: React.FC = ({ payload }: any) => {
-    console.log(payload);
     return (
       <div className="w-[250px] bg-gray-900/90 p-4 text-white outline-none">
         {payload && payload.length ? (
