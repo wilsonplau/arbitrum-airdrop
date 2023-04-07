@@ -9,6 +9,7 @@ import {
   _loadOrCreateAirdropClaim,
   _loadOrCreateAirdropDistributionStat,
   _loadOrCreateCumulativeAirdropClaimStat,
+  _loadOrCreateAirdropClaimStat,
 } from "./helpers";
 
 export function handleCanClaim(event: CanClaim): void {
@@ -67,12 +68,16 @@ export function handleHasClaimed(event: HasClaimed): void {
   airdropClaim.hasClaimed = true;
   airdropClaim.save();
 
-  let cumulativeAirdropClaimStat = _loadOrCreateCumulativeAirdropClaimStat(
-    event.block.timestamp
-  );
+  let cumulativeAirdropClaimStat = _loadOrCreateCumulativeAirdropClaimStat();
+  cumulativeAirdropClaimStat.timestamp = event.block.timestamp.toI32();
   cumulativeAirdropClaimStat.totalAmount =
     cumulativeAirdropClaimStat.totalAmount.plus(event.params.amount);
   cumulativeAirdropClaimStat.totalRecipients =
     cumulativeAirdropClaimStat.totalRecipients.plus(INCREMENT);
   cumulativeAirdropClaimStat.save();
+
+  let airdropClaimStat = _loadOrCreateAirdropClaimStat(event.block.timestamp);
+  airdropClaimStat.totalAmount = cumulativeAirdropClaimStat.totalAmount;
+  airdropClaimStat.totalRecipients = cumulativeAirdropClaimStat.totalRecipients;
+  airdropClaimStat.save();
 }
