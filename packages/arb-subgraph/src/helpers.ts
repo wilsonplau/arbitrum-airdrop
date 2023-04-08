@@ -1,6 +1,6 @@
 import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
-  AirdropStats,
+  AirdropStat,
   AirdropClaim,
   AirdropDistributionStat,
   TokenBalance,
@@ -15,10 +15,10 @@ export function _timestampToDay(timestamp: BigInt): BigInt {
   return timestamp.div(BigInt.fromI32(86400)).times(BigInt.fromI32(86400));
 }
 
-export function _loadOrCreateAirdropStats(): AirdropStats {
-  let total = AirdropStats.load(TOTAL_ID);
+export function _loadOrCreateAirdropStat(): AirdropStat {
+  let total = AirdropStat.load(TOTAL_ID);
   if (total == null) {
-    total = new AirdropStats(TOTAL_ID);
+    total = new AirdropStat(TOTAL_ID);
     total.totalAmount = BigInt.fromI32(0);
     total.totalClaimedAmount = BigInt.fromI32(0);
     total.totalRecipients = BigInt.fromI32(0);

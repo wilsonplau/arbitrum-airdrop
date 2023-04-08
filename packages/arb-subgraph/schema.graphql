@@ -43,7 +43,7 @@ type AirdropClaim @entity {
   hasClaimed: Boolean!
 }
 
-type AirdropStats @entity {
+type AirdropStat @entity {
   id: ID!
   totalAmount: BigInt! # uint256
   totalClaimedAmount: BigInt! # uint256
