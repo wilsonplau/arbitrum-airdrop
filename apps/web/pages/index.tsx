@@ -2,15 +2,16 @@ import React from "react";
 import { NextPage } from "next";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
 
-import UserClaimsTable from "~/containers/UserClaimsTable";
-import UserClaimsDistribution from "~/containers/UserClaimsDistribution";
+import apiClient from "~/lib/apiClient";
 import TokenBalancesTable from "~/containers/TokenBalancesTable";
 import TokenSupply from "~/containers/TokenSupply";
 import TokenDistributionChart from "~/containers/TokenDistributionChart";
-import UserClaimedStats from "~/containers/UserClaimedStats";
-import UserClaimedChart from "~/containers/UserClaimedChart";
-import apiClient from "~/lib/apiClient";
 import AirdropClaimForm from "~/containers/AirdropClaimForm";
+import AirdropStats from "~/containers/AirdropStats";
+import AirdropDistribution from "~/containers/AirdropDistribution";
+import AirdropClaimsTable from "~/containers/AirdropClaimsTable";
+import AirdropClaimedStats from "~/containers/AirdropClaimedStats";
+import AirdropHistoryChart from "~/containers/AirdropHistoryChart";
 
 const IndexPage: NextPage = () => {
   return (
@@ -34,12 +35,13 @@ const IndexPage: NextPage = () => {
             User Airdrop
           </h1>
           <div className="flex flex-col gap-4">
-            <UserClaimsDistribution />
-            <UserClaimsTable />
+            <AirdropStats />
+            <AirdropDistribution />
+            <AirdropClaimsTable />
           </div>
           <div className="flex flex-col gap-4">
-            <UserClaimedChart />
-            <UserClaimedStats />
+            <AirdropHistoryChart />
+            <AirdropClaimedStats />
           </div>
         </div>
       </div>

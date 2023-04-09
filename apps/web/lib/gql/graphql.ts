@@ -25,6 +25,62 @@ export type AirdropClaim = {
   id: Scalars['Bytes'];
 };
 
+export type AirdropClaimStat = {
+  __typename?: 'AirdropClaimStat';
+  id: Scalars['Bytes'];
+  timestamp: Scalars['Int'];
+  totalAmount: Scalars['BigInt'];
+  totalRecipients: Scalars['BigInt'];
+};
+
+export type AirdropClaimStat_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<AirdropClaimStat_Filter>>>;
+  id?: InputMaybe<Scalars['Bytes']>;
+  id_contains?: InputMaybe<Scalars['Bytes']>;
+  id_gt?: InputMaybe<Scalars['Bytes']>;
+  id_gte?: InputMaybe<Scalars['Bytes']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_lt?: InputMaybe<Scalars['Bytes']>;
+  id_lte?: InputMaybe<Scalars['Bytes']>;
+  id_not?: InputMaybe<Scalars['Bytes']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  or?: InputMaybe<Array<InputMaybe<AirdropClaimStat_Filter>>>;
+  timestamp?: InputMaybe<Scalars['Int']>;
+  timestamp_gt?: InputMaybe<Scalars['Int']>;
+  timestamp_gte?: InputMaybe<Scalars['Int']>;
+  timestamp_in?: InputMaybe<Array<Scalars['Int']>>;
+  timestamp_lt?: InputMaybe<Scalars['Int']>;
+  timestamp_lte?: InputMaybe<Scalars['Int']>;
+  timestamp_not?: InputMaybe<Scalars['Int']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  totalAmount?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_not?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalRecipients?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_gt?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_gte?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalRecipients_lt?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_lte?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_not?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+};
+
+export enum AirdropClaimStat_OrderBy {
+  Id = 'id',
+  Timestamp = 'timestamp',
+  TotalAmount = 'totalAmount',
+  TotalRecipients = 'totalRecipients'
+}
+
 export type AirdropClaim_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
@@ -69,19 +125,26 @@ export enum AirdropClaim_OrderBy {
   Id = 'id'
 }
 
-export type AirdropStats = {
-  __typename?: 'AirdropStats';
+export type AirdropDistributionStat = {
+  __typename?: 'AirdropDistributionStat';
+  amount: Scalars['BigInt'];
   id: Scalars['ID'];
   totalAmount: Scalars['BigInt'];
-  totalClaimedAmount: Scalars['BigInt'];
-  totalClaimedRecipients: Scalars['BigInt'];
   totalRecipients: Scalars['BigInt'];
 };
 
-export type AirdropStats_Filter = {
+export type AirdropDistributionStat_Filter = {
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<AirdropStats_Filter>>>;
+  amount?: InputMaybe<Scalars['BigInt']>;
+  amount_gt?: InputMaybe<Scalars['BigInt']>;
+  amount_gte?: InputMaybe<Scalars['BigInt']>;
+  amount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amount_lt?: InputMaybe<Scalars['BigInt']>;
+  amount_lte?: InputMaybe<Scalars['BigInt']>;
+  amount_not?: InputMaybe<Scalars['BigInt']>;
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  and?: InputMaybe<Array<InputMaybe<AirdropDistributionStat_Filter>>>;
   id?: InputMaybe<Scalars['ID']>;
   id_gt?: InputMaybe<Scalars['ID']>;
   id_gte?: InputMaybe<Scalars['ID']>;
@@ -90,7 +153,54 @@ export type AirdropStats_Filter = {
   id_lte?: InputMaybe<Scalars['ID']>;
   id_not?: InputMaybe<Scalars['ID']>;
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
-  or?: InputMaybe<Array<InputMaybe<AirdropStats_Filter>>>;
+  or?: InputMaybe<Array<InputMaybe<AirdropDistributionStat_Filter>>>;
+  totalAmount?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_not?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalRecipients?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_gt?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_gte?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalRecipients_lt?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_lte?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_not?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+};
+
+export enum AirdropDistributionStat_OrderBy {
+  Amount = 'amount',
+  Id = 'id',
+  TotalAmount = 'totalAmount',
+  TotalRecipients = 'totalRecipients'
+}
+
+export type AirdropStat = {
+  __typename?: 'AirdropStat';
+  id: Scalars['ID'];
+  totalAmount: Scalars['BigInt'];
+  totalClaimedAmount: Scalars['BigInt'];
+  totalClaimedRecipients: Scalars['BigInt'];
+  totalRecipients: Scalars['BigInt'];
+};
+
+export type AirdropStat_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<AirdropStat_Filter>>>;
+  id?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  or?: InputMaybe<Array<InputMaybe<AirdropStat_Filter>>>;
   totalAmount?: InputMaybe<Scalars['BigInt']>;
   totalAmount_gt?: InputMaybe<Scalars['BigInt']>;
   totalAmount_gte?: InputMaybe<Scalars['BigInt']>;
@@ -125,7 +235,7 @@ export type AirdropStats_Filter = {
   totalRecipients_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
 };
 
-export enum AirdropStats_OrderBy {
+export enum AirdropStat_OrderBy {
   Id = 'id',
   TotalAmount = 'totalAmount',
   TotalClaimedAmount = 'totalClaimedAmount',
@@ -221,6 +331,60 @@ export enum CanClaimEvent_OrderBy {
   Id = 'id',
   Recipient = 'recipient',
   TransactionHash = 'transactionHash'
+}
+
+export type CumulativeAirdropClaimStat = {
+  __typename?: 'CumulativeAirdropClaimStat';
+  id: Scalars['ID'];
+  timestamp: Scalars['Int'];
+  totalAmount: Scalars['BigInt'];
+  totalRecipients: Scalars['BigInt'];
+};
+
+export type CumulativeAirdropClaimStat_Filter = {
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<CumulativeAirdropClaimStat_Filter>>>;
+  id?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  or?: InputMaybe<Array<InputMaybe<CumulativeAirdropClaimStat_Filter>>>;
+  timestamp?: InputMaybe<Scalars['Int']>;
+  timestamp_gt?: InputMaybe<Scalars['Int']>;
+  timestamp_gte?: InputMaybe<Scalars['Int']>;
+  timestamp_in?: InputMaybe<Array<Scalars['Int']>>;
+  timestamp_lt?: InputMaybe<Scalars['Int']>;
+  timestamp_lte?: InputMaybe<Scalars['Int']>;
+  timestamp_not?: InputMaybe<Scalars['Int']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  totalAmount?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_not?: InputMaybe<Scalars['BigInt']>;
+  totalAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalRecipients?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_gt?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_gte?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalRecipients_lt?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_lte?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_not?: InputMaybe<Scalars['BigInt']>;
+  totalRecipients_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+};
+
+export enum CumulativeAirdropClaimStat_OrderBy {
+  Id = 'id',
+  Timestamp = 'timestamp',
+  TotalAmount = 'totalAmount',
+  TotalRecipients = 'totalRecipients'
 }
 
 export type DailyTransferStat = {
@@ -506,10 +670,17 @@ export type Query = {
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
   airdropClaim?: Maybe<AirdropClaim>;
+  airdropClaimStat?: Maybe<AirdropClaimStat>;
+  airdropClaimStats: Array<AirdropClaimStat>;
   airdropClaims: Array<AirdropClaim>;
-  airdropStats: Array<AirdropStats>;
+  airdropDistributionStat?: Maybe<AirdropDistributionStat>;
+  airdropDistributionStats: Array<AirdropDistributionStat>;
+  airdropStat?: Maybe<AirdropStat>;
+  airdropStats: Array<AirdropStat>;
   canClaimEvent?: Maybe<CanClaimEvent>;
   canClaimEvents: Array<CanClaimEvent>;
+  cumulativeAirdropClaimStat?: Maybe<CumulativeAirdropClaimStat>;
+  cumulativeAirdropClaimStats: Array<CumulativeAirdropClaimStat>;
   dailyTransferStat?: Maybe<DailyTransferStat>;
   dailyTransferStats: Array<DailyTransferStat>;
   delegateVotesBalance?: Maybe<DelegateVotesBalance>;
@@ -537,6 +708,24 @@ export type QueryAirdropClaimArgs = {
 };
 
 
+export type QueryAirdropClaimStatArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryAirdropClaimStatsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<AirdropClaimStat_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AirdropClaimStat_Filter>;
+};
+
+
 export type QueryAirdropClaimsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']>;
@@ -548,14 +737,39 @@ export type QueryAirdropClaimsArgs = {
 };
 
 
-export type QueryAirdropStatsArgs = {
+export type QueryAirdropDistributionStatArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryAirdropDistributionStatsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<AirdropStats_OrderBy>;
+  orderBy?: InputMaybe<AirdropDistributionStat_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars['Int']>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<AirdropStats_Filter>;
+  where?: InputMaybe<AirdropDistributionStat_Filter>;
+};
+
+
+export type QueryAirdropStatArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryAirdropStatsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<AirdropStat_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AirdropStat_Filter>;
 };
 
 
@@ -574,6 +788,24 @@ export type QueryCanClaimEventsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<CanClaimEvent_Filter>;
+};
+
+
+export type QueryCumulativeAirdropClaimStatArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryCumulativeAirdropClaimStatsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<CumulativeAirdropClaimStat_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<CumulativeAirdropClaimStat_Filter>;
 };
 
 
@@ -689,10 +921,17 @@ export type Subscription = {
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
   airdropClaim?: Maybe<AirdropClaim>;
+  airdropClaimStat?: Maybe<AirdropClaimStat>;
+  airdropClaimStats: Array<AirdropClaimStat>;
   airdropClaims: Array<AirdropClaim>;
-  airdropStats: Array<AirdropStats>;
+  airdropDistributionStat?: Maybe<AirdropDistributionStat>;
+  airdropDistributionStats: Array<AirdropDistributionStat>;
+  airdropStat?: Maybe<AirdropStat>;
+  airdropStats: Array<AirdropStat>;
   canClaimEvent?: Maybe<CanClaimEvent>;
   canClaimEvents: Array<CanClaimEvent>;
+  cumulativeAirdropClaimStat?: Maybe<CumulativeAirdropClaimStat>;
+  cumulativeAirdropClaimStats: Array<CumulativeAirdropClaimStat>;
   dailyTransferStat?: Maybe<DailyTransferStat>;
   dailyTransferStats: Array<DailyTransferStat>;
   delegateVotesBalance?: Maybe<DelegateVotesBalance>;
@@ -720,6 +959,24 @@ export type SubscriptionAirdropClaimArgs = {
 };
 
 
+export type SubscriptionAirdropClaimStatArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionAirdropClaimStatsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<AirdropClaimStat_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AirdropClaimStat_Filter>;
+};
+
+
 export type SubscriptionAirdropClaimsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']>;
@@ -731,14 +988,39 @@ export type SubscriptionAirdropClaimsArgs = {
 };
 
 
-export type SubscriptionAirdropStatsArgs = {
+export type SubscriptionAirdropDistributionStatArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionAirdropDistributionStatsArgs = {
   block?: InputMaybe<Block_Height>;
   first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<AirdropStats_OrderBy>;
+  orderBy?: InputMaybe<AirdropDistributionStat_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: InputMaybe<Scalars['Int']>;
   subgraphError?: _SubgraphErrorPolicy_;
-  where?: InputMaybe<AirdropStats_Filter>;
+  where?: InputMaybe<AirdropDistributionStat_Filter>;
+};
+
+
+export type SubscriptionAirdropStatArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionAirdropStatsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<AirdropStat_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<AirdropStat_Filter>;
 };
 
 
@@ -757,6 +1039,24 @@ export type SubscriptionCanClaimEventsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   subgraphError?: _SubgraphErrorPolicy_;
   where?: InputMaybe<CanClaimEvent_Filter>;
+};
+
+
+export type SubscriptionCumulativeAirdropClaimStatArgs = {
+  block?: InputMaybe<Block_Height>;
+  id: Scalars['ID'];
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCumulativeAirdropClaimStatsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<CumulativeAirdropClaimStat_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: InputMaybe<Scalars['Int']>;
+  subgraphError?: _SubgraphErrorPolicy_;
+  where?: InputMaybe<CumulativeAirdropClaimStat_Filter>;
 };
 
 
@@ -1041,6 +1341,32 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny'
 }
 
+export type GetAirdropClaimsQueryVariables = Exact<{
+  address: Scalars['Bytes'];
+  skip: Scalars['Int'];
+  limit: Scalars['Int'];
+}>;
+
+
+export type GetAirdropClaimsQuery = { __typename?: 'Query', airdropClaims: Array<{ __typename?: 'AirdropClaim', id: any, amount: any, claimedAmount: any, hasClaimed: boolean }> };
+
+export type GetAirdropDistributionQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAirdropDistributionQuery = { __typename?: 'Query', airdropDistributionStats: Array<{ __typename?: 'AirdropDistributionStat', id: string, amount: any, totalAmount: any, totalRecipients: any }> };
+
+export type GetAirdropHistoryQueryVariables = Exact<{
+  skip?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetAirdropHistoryQuery = { __typename?: 'Query', airdropClaimStats: Array<{ __typename?: 'AirdropClaimStat', id: any, timestamp: number, totalAmount: any, totalRecipients: any }> };
+
+export type GetAirdropStatsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAirdropStatsQuery = { __typename?: 'Query', airdropStat?: { __typename?: 'AirdropStat', id: string, totalAmount: any, totalRecipients: any, totalClaimedAmount: any, totalClaimedRecipients: any } | null };
+
 export type GetTokenBalancesQueryVariables = Exact<{
   address?: InputMaybe<Scalars['Bytes']>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1051,4 +1377,8 @@ export type GetTokenBalancesQueryVariables = Exact<{
 export type GetTokenBalancesQuery = { __typename?: 'Query', tokenBalances: Array<{ __typename?: 'TokenBalance', address: any, balance: any }> };
 
 
+export const GetAirdropClaimsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAirdropClaims"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"address"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Bytes"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"airdropClaims"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_contains"},"value":{"kind":"Variable","name":{"kind":"Name","value":"address"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"amount"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"desc"}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"claimedAmount"}},{"kind":"Field","name":{"kind":"Name","value":"hasClaimed"}}]}}]}}]} as unknown as DocumentNode<GetAirdropClaimsQuery, GetAirdropClaimsQueryVariables>;
+export const GetAirdropDistributionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAirdropDistribution"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"airdropDistributionStats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"totalAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalRecipients"}}]}}]}}]} as unknown as DocumentNode<GetAirdropDistributionQuery, GetAirdropDistributionQueryVariables>;
+export const GetAirdropHistoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAirdropHistory"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"airdropClaimStats"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"timestamp"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"asc"}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"1000"}},{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"timestamp"}},{"kind":"Field","name":{"kind":"Name","value":"totalAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalRecipients"}}]}}]}}]} as unknown as DocumentNode<GetAirdropHistoryQuery, GetAirdropHistoryQueryVariables>;
+export const GetAirdropStatsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getAirdropStats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"airdropStat"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"StringValue","value":"total","block":false}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"totalAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalRecipients"}},{"kind":"Field","name":{"kind":"Name","value":"totalClaimedAmount"}},{"kind":"Field","name":{"kind":"Name","value":"totalClaimedRecipients"}}]}}]}}]} as unknown as DocumentNode<GetAirdropStatsQuery, GetAirdropStatsQueryVariables>;
 export const GetTokenBalancesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getTokenBalances"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"address"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Bytes"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"skip"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"tokenBalances"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"address_contains"},"value":{"kind":"Variable","name":{"kind":"Name","value":"address"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"skip"},"value":{"kind":"Variable","name":{"kind":"Name","value":"skip"}}},{"kind":"Argument","name":{"kind":"Name","value":"orderBy"},"value":{"kind":"EnumValue","value":"balance"}},{"kind":"Argument","name":{"kind":"Name","value":"orderDirection"},"value":{"kind":"EnumValue","value":"desc"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"balance"}}]}}]}}]} as unknown as DocumentNode<GetTokenBalancesQuery, GetTokenBalancesQueryVariables>;

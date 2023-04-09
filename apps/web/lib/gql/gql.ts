@@ -13,6 +13,10 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n  query getAirdropClaims($address: Bytes!, $skip: Int!, $limit: Int!) {\n    airdropClaims(\n      where: { id_contains: $address }\n      orderBy: amount\n      orderDirection: desc\n      first: $limit\n      skip: $skip\n    ) {\n      id\n      amount\n      claimedAmount\n      hasClaimed\n    }\n  }\n": types.GetAirdropClaimsDocument,
+    "\n  query getAirdropDistribution {\n    airdropDistributionStats {\n      id\n      amount\n      totalAmount\n      totalRecipients\n    }\n  }\n": types.GetAirdropDistributionDocument,
+    "\n  query getAirdropHistory($skip: Int) {\n    airdropClaimStats(\n      orderBy: timestamp\n      orderDirection: asc\n      first: 1000\n      skip: $skip\n    ) {\n      id\n      timestamp\n      totalAmount\n      totalRecipients\n    }\n  }\n": types.GetAirdropHistoryDocument,
+    "\n  query getAirdropStats {\n    airdropStat(id: \"total\") {\n      id\n      totalAmount\n      totalRecipients\n      totalClaimedAmount\n      totalClaimedRecipients\n    }\n  }\n": types.GetAirdropStatsDocument,
     "\n  query getTokenBalances($address: Bytes, $limit: Int, $skip: Int) {\n    tokenBalances(\n      where: { address_contains: $address }\n      first: $limit\n      skip: $skip\n      orderBy: balance\n      orderDirection: desc\n    ) {\n      address\n      balance\n    }\n  }\n": types.GetTokenBalancesDocument,
 };
 
@@ -30,6 +34,22 @@ const documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query getAirdropClaims($address: Bytes!, $skip: Int!, $limit: Int!) {\n    airdropClaims(\n      where: { id_contains: $address }\n      orderBy: amount\n      orderDirection: desc\n      first: $limit\n      skip: $skip\n    ) {\n      id\n      amount\n      claimedAmount\n      hasClaimed\n    }\n  }\n"): (typeof documents)["\n  query getAirdropClaims($address: Bytes!, $skip: Int!, $limit: Int!) {\n    airdropClaims(\n      where: { id_contains: $address }\n      orderBy: amount\n      orderDirection: desc\n      first: $limit\n      skip: $skip\n    ) {\n      id\n      amount\n      claimedAmount\n      hasClaimed\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query getAirdropDistribution {\n    airdropDistributionStats {\n      id\n      amount\n      totalAmount\n      totalRecipients\n    }\n  }\n"): (typeof documents)["\n  query getAirdropDistribution {\n    airdropDistributionStats {\n      id\n      amount\n      totalAmount\n      totalRecipients\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query getAirdropHistory($skip: Int) {\n    airdropClaimStats(\n      orderBy: timestamp\n      orderDirection: asc\n      first: 1000\n      skip: $skip\n    ) {\n      id\n      timestamp\n      totalAmount\n      totalRecipients\n    }\n  }\n"): (typeof documents)["\n  query getAirdropHistory($skip: Int) {\n    airdropClaimStats(\n      orderBy: timestamp\n      orderDirection: asc\n      first: 1000\n      skip: $skip\n    ) {\n      id\n      timestamp\n      totalAmount\n      totalRecipients\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query getAirdropStats {\n    airdropStat(id: \"total\") {\n      id\n      totalAmount\n      totalRecipients\n      totalClaimedAmount\n      totalClaimedRecipients\n    }\n  }\n"): (typeof documents)["\n  query getAirdropStats {\n    airdropStat(id: \"total\") {\n      id\n      totalAmount\n      totalRecipients\n      totalClaimedAmount\n      totalClaimedRecipients\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

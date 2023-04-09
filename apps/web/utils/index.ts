@@ -6,10 +6,12 @@ export function formatTokenAmount(amount: string) {
   ).toLocaleString("en-US");
 }
 
-export function formatNumber(num: number) {
-  return num.toLocaleString("en-US");
+export function formatNumber(num?: number) {
+  return num ? num.toLocaleString("en-US") : "";
 }
 
-export function convertTokenAmount(amount: string) {
-  return Number(BigInt(amount) / BigInt(10 ** ARBITRUM_TOKEN_DECIMALS));
+export function convertTokenAmount(amount?: string) {
+  return amount
+    ? Number(BigInt(amount) / BigInt(10 ** ARBITRUM_TOKEN_DECIMALS))
+    : 0;
 }
