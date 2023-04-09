@@ -2,16 +2,16 @@ import React from "react";
 import { NextPage } from "next";
 import { dehydrate, QueryClient } from "@tanstack/react-query";
 
+import apiClient from "~/lib/apiClient";
 import TokenBalancesTable from "~/containers/TokenBalancesTable";
 import TokenSupply from "~/containers/TokenSupply";
 import TokenDistributionChart from "~/containers/TokenDistributionChart";
-import UserClaimedChart from "~/containers/UserClaimedChart";
-import apiClient from "~/lib/apiClient";
 import AirdropClaimForm from "~/containers/AirdropClaimForm";
 import AirdropStats from "~/containers/AirdropStats";
 import AirdropDistribution from "~/containers/AirdropDistribution";
 import AirdropClaimsTable from "~/containers/AirdropClaimsTable";
 import AirdropClaimedStats from "~/containers/AirdropClaimedStats";
+import AirdropHistoryChart from "~/containers/AirdropHistoryChart";
 
 const IndexPage: NextPage = () => {
   return (
@@ -40,7 +40,7 @@ const IndexPage: NextPage = () => {
             <AirdropClaimsTable />
           </div>
           <div className="flex flex-col gap-4">
-            <UserClaimedChart />
+            <AirdropHistoryChart />
             <AirdropClaimedStats />
           </div>
         </div>

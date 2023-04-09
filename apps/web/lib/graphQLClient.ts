@@ -3,12 +3,12 @@ import getTokenBalancesQuery from "~/lib/queries/getTokenBalancesQuery";
 import getAirdropDistributionQuery from "~/lib/queries/getAirdropDistributionQuery";
 import getAirdropStatsQuery from "~/lib/queries/getAirdropStatsQuery";
 import {
+  AirdropClaimStat,
   AirdropDistributionStat,
   AirdropStat,
-  CumulativeAirdropClaimStat,
 } from "./gql/graphql";
 import getAirdropClaimsQuery from "./queries/getAirdropClaimsQuery";
-import getAirdropClaimHistoryQuery from "./queries/getAirdropClaimHistoryQuery";
+import getAirdropHistoryQuery from "./queries/getAirdropHistoryQuery";
 
 const SUBGRAPH_URL = process.env.NEXT_PUBLIC_SUBGRAPH_URL!;
 
@@ -36,5 +36,17 @@ export default class graphQLClient {
   static async getAirdropDistribution(): Promise<AirdropDistributionStat[]> {
     const data = await request(SUBGRAPH_URL, getAirdropDistributionQuery, {});
     return data.airdropDistributionStats;
+  }
+  static async getAirdropHistory(): Promise<AirdropClaimStat[]> {
+    const output: AirdropClaimStat[] = [];
+    let data = await request(SUBGRAPH_URL, getAirdropHistoryQuery, {});
+    output.push(...data.airdropClaimStats);
+    while (data.airdropClaimStats.length === 1000) {
+      data = await request(SUBGRAPH_URL, getAirdropHistoryQuery, {
+        skip: output.length,
+      });
+      output.push(...data.airdropClaimStats);
+    }
+    return output;
   }
 }
