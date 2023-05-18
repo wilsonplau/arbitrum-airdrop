@@ -6,6 +6,7 @@ import {
   TokenBalance,
   DailyTransferStat,
   DelegateVotesBalance,
+  AirdropClaimStat,
   CumulativeAirdropClaimStat,
 } from "../generated/schema";
 import { TOTAL_ID } from "./constants";
@@ -86,16 +87,26 @@ export function _loadOrCreateDelegateVotesBalance(
   return delegateVotesBalance;
 }
 
-export function _loadOrCreateCumulativeAirdropClaimStat(
+export function _loadOrCreateAirdropClaimStat(
   blockTimestamp: BigInt
-): CumulativeAirdropClaimStat {
-  let day = _timestampToDay(blockTimestamp);
-  let cumulativeAirdropClaimStat = CumulativeAirdropClaimStat.load(
-    day.toString()
-  );
+): AirdropClaimStat {
+  let day = _timestampToDay(blockTimestamp).toI32();
+  let id = Bytes.fromI32(day);
+  let airdropClaimStat = AirdropClaimStat.load(id);
+  if (airdropClaimStat == null) {
+    airdropClaimStat = new AirdropClaimStat(id);
+    airdropClaimStat.timestamp = day;
+    airdropClaimStat.totalAmount = BigInt.fromI32(0);
+    airdropClaimStat.totalRecipients = BigInt.fromI32(0);
+  }
+  return airdropClaimStat;
+}
+
+export function _loadOrCreateCumulativeAirdropClaimStat(): CumulativeAirdropClaimStat {
+  let cumulativeAirdropClaimStat = CumulativeAirdropClaimStat.load(TOTAL_ID);
   if (cumulativeAirdropClaimStat == null) {
-    cumulativeAirdropClaimStat = new CumulativeAirdropClaimStat(day.toString());
-    cumulativeAirdropClaimStat.timestamp = day.toI32();
+    cumulativeAirdropClaimStat = new CumulativeAirdropClaimStat(TOTAL_ID);
+    cumulativeAirdropClaimStat.timestamp = 0;
     cumulativeAirdropClaimStat.totalAmount = BigInt.fromI32(0);
     cumulativeAirdropClaimStat.totalRecipients = BigInt.fromI32(0);
   }

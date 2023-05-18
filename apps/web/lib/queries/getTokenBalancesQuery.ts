@@ -1,6 +1,6 @@
 import { graphql } from "~/lib/gql/gql";
 
-const query = graphql(`
+const getTokenBalancesQuery = graphql(`
   query getTokenBalances($address: Bytes, $limit: Int, $skip: Int) {
     tokenBalances(
       where: { address_contains: $address }
@@ -15,4 +15,4 @@ const query = graphql(`
   }
 `);
 
-export default query;
+export default getTokenBalancesQuery;

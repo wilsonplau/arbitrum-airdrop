@@ -58,6 +58,13 @@ type AirdropDistributionStat @entity {
   totalRecipients: BigInt! # uint256
 }
 
+type AirdropClaimStat @entity {
+  id: Bytes! # timestamp
+  timestamp: Int! # timestamp
+  totalAmount: BigInt! # uint256
+  totalRecipients: BigInt! # uint256
+}
+
 type CumulativeAirdropClaimStat @entity {
   id: ID!
   timestamp: Int! # timestamp

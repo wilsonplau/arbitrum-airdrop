@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import {
   Line,
   LineChart,
@@ -8,31 +7,35 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import apiClient from "~/lib/apiClient";
 import { convertTokenAmount } from "~/utils";
+import useAirdropHistory from "~/hooks/useAirdropHistory";
+import { format, fromUnixTime } from "date-fns";
 
-const UserClaimedChart: React.FC = () => {
-  const [dataKey, setDataKey] = useState<"sum" | "count">("count");
-  const { data: distributionData } = useQuery(
-    ["claimed", "distribution"],
-    apiClient.getClaimedDistribution
+const AirdropHistoryChart: React.FC = () => {
+  const [dataKey, setDataKey] = useState<"totalAmount" | "totalRecipients">(
+    "totalRecipients"
   );
-  const data = distributionData?.data.map(({ blockNumber, sum, count }) => ({
-    blockNumber,
-    sum: convertTokenAmount(sum),
-    count,
-  }));
+  const { data: historyData } = useAirdropHistory();
+  const data = historyData.map(
+    ({ timestamp, totalAmount, totalRecipients }) => ({
+      timestamp,
+      totalAmount: convertTokenAmount(totalAmount),
+      totalRecipients,
+    })
+  );
 
   const CustomTooltip: React.FC = ({ payload }: any) => {
     if (!payload || !payload.length) return null;
-    const { blockNumber, sum, count } = payload[0].payload;
+    const { timestamp, totalAmount, totalRecipients } = payload[0].payload;
     return (
       <div className="relative w-[250px] bg-gray-900/90 p-4 text-white outline-none">
-        By Block Number {blockNumber.toLocaleString("en-US")},{" "}
-        {dataKey === "count"
-          ? `${count.toLocaleString("en-US")} addresses had claimed the
+        By {format(fromUnixTime(timestamp), "yyyy-MM-dd")},{" "}
+        {dataKey === "totalRecipients"
+          ? `${totalRecipients.toLocaleString(
+              "en-US"
+            )} addresses had claimed the
         airdrop.`
-          : `${sum.toLocaleString("en-US")} tokens had been claimed.`}
+          : `${totalAmount.toLocaleString("en-US")} tokens had been claimed.`}
       </div>
     );
   };
@@ -45,22 +48,22 @@ const UserClaimedChart: React.FC = () => {
           <div className="flex flex-row border-2 border-gray-700">
             <button
               className="rounded border-gray-300 py-1 px-2 text-sm text-white disabled:bg-gray-900"
-              disabled={dataKey == "count"}
-              onClick={() => setDataKey("count")}
+              disabled={dataKey == "totalRecipients"}
+              onClick={() => setDataKey("totalRecipients")}
             >
               Users
             </button>
             <button
               className="rounded border-gray-300 py-1 px-2 text-sm text-white disabled:bg-gray-900"
-              disabled={dataKey == "sum"}
-              onClick={() => setDataKey("sum")}
+              disabled={dataKey == "totalAmount"}
+              onClick={() => setDataKey("totalAmount")}
             >
               Tokens
             </button>
           </div>
         </div>
         <h2 className="text-lg text-gray-400">
-          {dataKey === "count"
+          {dataKey === "totalRecipients"
             ? "How many addresses have claimed the airdrop so far?"
             : "How many tokens have been claimed in the airdrop so far?"}
         </h2>
@@ -70,9 +73,12 @@ const UserClaimedChart: React.FC = () => {
           <ResponsiveContainer>
             <LineChart data={data}>
               <XAxis
-                dataKey="blockNumber"
+                dataKey="timestamp"
                 stroke="white"
                 tick={{ fontSize: 12 }}
+                tickFormatter={(timestamp) =>
+                  format(fromUnixTime(timestamp), "yyyy-MM-dd")
+                }
               />
               <YAxis
                 dataKey={dataKey}
@@ -100,4 +106,4 @@ const UserClaimedChart: React.FC = () => {
   );
 };
 
-export default UserClaimedChart;
+export default AirdropHistoryChart;
